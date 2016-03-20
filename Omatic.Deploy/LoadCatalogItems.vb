@@ -31,10 +31,7 @@ Namespace Omatic.Deploy
         Public Property WebServiceDbName As String
         <Required()>
         Public Property WebServiceUrl As String
-        Public Property InfinityUserName As String
-        Public Property InfinityPassword As String
         Public Property TimeOutSeconds As Integer
-
 #End Region
 
         Public Sub New()
@@ -69,11 +66,7 @@ Namespace Omatic.Deploy
 
             Dim successfulLoad As Boolean = True
 
-            If Not [String].IsNullOrEmpty(InfinityUserName) Then
-                proxy.Credentials = New System.Net.NetworkCredential(InfinityUserName, InfinityPassword)
-            Else
-                proxy.UseDefaultCredentials = True
-            End If
+            proxy.UseDefaultCredentials = True
 
             If TimeOutSeconds > 0 Then
                 proxy.Timeout = TimeOutSeconds * 1000
@@ -81,8 +74,6 @@ Namespace Omatic.Deploy
                 proxy.Timeout = 3000000
             End If
 
-
-            Log.LogMessage("User: {0}", If([String].IsNullOrEmpty(InfinityUserName), "[Default credentials]", InfinityUserName))
             Log.LogMessage("URL: {0}" & vbLf & "DB: {1}", WebServiceUrl, WebServiceDbName)
             Log.LogMessage("Timeout: {0}s", proxy.Timeout / 1000)
 
@@ -108,7 +99,7 @@ Namespace Omatic.Deploy
                 loadReply = LoadCatalogItem(itemToLoadInfo)
             Catch soapEx As SoapException
                 If soapEx.Message.Contains("ItemAlreadyExistsException") Then
-                    ' Not sure why these keep occurring, but going to skip them and see what happens.
+                    ' Seem to get these on occassion for no apparent reason
                     Log.LogMessage("Encountered ItemAlreadyExistsException, skipping this report.")
                 Else
                     Log.LogMessage("exception ToString: {0}", soapEx.ToString())
@@ -145,9 +136,8 @@ Namespace Omatic.Deploy
             ' Retrieve item info from 'Catalog Browser List' datalist so we can determine how we want to load it
             Dim listLoadReq As New DataListLoadRequest()
             listLoadReq.ClientAppInfo = header
-            listLoadReq.DataListID = New Guid("91907a4f-14a3-4433-b780-a030c01ca452")
             ' Catalog Browser List
-            ' Create params with SOURCE set to the source from the msbuild item metadata
+            listLoadReq.DataListID = New Guid("91907a4f-14a3-4433-b780-a030c01ca452")
             listLoadReq.Parameters = New DataFormItem()
             listLoadReq.Parameters.Values = New DataFormFieldValue() {New DataFormFieldValue() With {
              .ID = "SOURCE",
@@ -158,7 +148,6 @@ Namespace Omatic.Deploy
             Dim listLoadReply As DataListLoadReply = Nothing
             listLoadReply = proxy.DataListLoad(listLoadReq)
 
-            ' Loading a few constants for clarity's sake
             Dim itemSourceColNum As Integer = 3
             Dim itemIdColNum As Integer = 5
             Dim itemResourceNameColNum As Integer = 8
