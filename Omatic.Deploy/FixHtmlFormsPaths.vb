@@ -11,26 +11,10 @@ Namespace Omatic.Deploy
         Private _fixedPaths As List(Of ITaskItem)
 
         <Required()>
-        Public Property Paths() As ITaskItem()
-            Get
-                Return m_Paths
-            End Get
-            Set(value As ITaskItem())
-                m_Paths = value
-            End Set
-        End Property
-        Private m_Paths As ITaskItem()
+        Public Property Paths As ITaskItem()
 
         <Required()>
-        Public Property DestinationFolder() As String
-            Get
-                Return m_DestinationFolder
-            End Get
-            Set(value As String)
-                m_DestinationFolder = value
-            End Set
-        End Property
-        Private m_DestinationFolder As String
+        Public Property DestinationFolder As String
 
         <Output()>
         Public ReadOnly Property FixedPaths() As ITaskItem()

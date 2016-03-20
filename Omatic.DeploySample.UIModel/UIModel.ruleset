@@ -1,26 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="Blackbaud UIModel Recommended Ruleset" Description="Recommended ruleset for all UIModel projects to inherit from." ToolsVersion="10.0">
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
-    <Rule Id="BB001" Action="Error" />
-    <Rule Id="BB002" Action="Error" />
-    <Rule Id="BB003" Action="Error" />
-    <Rule Id="BB004" Action="Error" />
-    <Rule Id="BB005" Action="Error" />
-    <Rule Id="BB007" Action="Error" />
-    <Rule Id="BB009" Action="Error" />
-    <Rule Id="BB011" Action="Error" />
-    <Rule Id="BB012" Action="Error" />
-    <Rule Id="BB014" Action="Error" />
-    <Rule Id="BB015" Action="Error" />
-    <Rule Id="BB020" Action="Error" />
-    <Rule Id="BB021" Action="Error" />
-    <Rule Id="BB024" Action="Error" />
-    <Rule Id="BB066" Action="Warning" />
-    <Rule Id="BB067" Action="Warning" />
-    <Rule Id="BB068" Action="Warning" />
-    <Rule Id="BB069" Action="Warning" />
-    <Rule Id="BB070" Action="Warning" />
-    <Rule Id="BB100" Action="Error" />
     <Rule Id="CA1000" Action="Error" />
     <Rule Id="CA1001" Action="Error" />
     <Rule Id="CA1002" Action="Error" />

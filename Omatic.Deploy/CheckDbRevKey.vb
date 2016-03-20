@@ -13,37 +13,13 @@ Namespace Omatic.Deploy
 #Region "Properties"
 
         <Required()>
-        Public Property DeployPath() As String
-            Get
-                Return m_DeployPath
-            End Get
-            Set(value As String)
-                m_DeployPath = value
-            End Set
-        End Property
-        Private m_DeployPath As String
+        Public Property DeployPath As String
 
         <Required()>
-        Public Property SqlConnectString() As String
-            Get
-                Return m_SqlConnectString
-            End Get
-            Set(value As String)
-                m_SqlConnectString = value
-            End Set
-        End Property
-        Private m_SqlConnectString As String
+        Public Property SqlConnectString As String
 
         <Output()>
-        Public Property DBRevisionsNeeded() As Boolean
-            Get
-                Return m_DBRevisionsNeeded
-            End Get
-            Private Set(value As Boolean)
-                m_DBRevisionsNeeded = value
-            End Set
-        End Property
-        Private m_DBRevisionsNeeded As Boolean
+        Public Property DBRevisionsNeeded As Boolean
 
 #End Region
 
