@@ -1,0 +1,20 @@
+<PackageSpec 
+    xmlns="bb_appfx_package"
+    xmlns:c="bb_appfx_commontypes"
+    ID="24f8d3dc-c720-44dd-9f1c-c1146e7fb8e0"
+    Name="Omatic Deploy Sample Package"
+    Description="Sample package spec"
+    Author="Omatic"
+    >
+
+	<c:DependencyList>
+        <c:Dependency CatalogAssembly="Omatic.DeploySample.Catalog.dll" CatalogItem="Omatic.DeploySample.Catalog.DeploySample.Table.xml" />
+        <c:Dependency CatalogAssembly="Omatic.DeploySample.Catalog.dll" CatalogItem="Omatic.DeploySample.Catalog.DeploySample.DataList.xml" />
+        <c:Dependency CatalogAssembly="Omatic.DeploySample.Catalog.dll" CatalogItem="Omatic.DeploySample.Catalog.DeploySample.Add.xml" />
+        <c:Dependency CatalogAssembly="Omatic.DeploySample.Catalog.dll" CatalogItem="Omatic.DeploySample.Catalog.DeploySample.Edit.xml" />
+        <c:Dependency CatalogAssembly="Omatic.DeploySample.Catalog.dll" CatalogItem="Omatic.DeploySample.Catalog.DeploySample.Page.xml" />
+        <c:Dependency CatalogAssembly="Omatic.DeploySample.Catalog.dll" CatalogItem="Omatic.DeploySample.Catalog.DeploySample.FunctionalArea.xml" />
+        <c:Dependency CatalogAssembly="Omatic.DeploySample.Catalog.dll" CatalogItem="Omatic.DeploySample.Catalog.DeploySample.Task.xml" />
+    </c:DependencyList>
+
+</PackageSpec>

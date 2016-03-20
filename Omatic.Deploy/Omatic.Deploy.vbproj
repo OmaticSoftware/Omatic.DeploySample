@@ -1,0 +1,852 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DDE1FAE5-3069-4FA5-9A79-D2014ADD67E0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Omatic.Deploy</RootNamespace>
+    <AssemblyName>Omatic.Deploy</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>Omatic.Deploy.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>Omatic.Deploy.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CheckDbRevKey.vb" />
+    <Compile Include="FixHtmlFormsPaths.vb" />
+    <Compile Include="LoadCatalogItems.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Web References\ServiceProxy\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="CustomInstall.proj">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="CustomizationInstall.ps1" />
+    <None Include="CustomizationUninstall.ps1" />
+    <None Include="CustomPackage.proj" />
+    <None Include="Invoke-MsBuild.psm1" />
+    <None Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild Extension Pack 4 %28x64%29.wixpdb" />
+    <None Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild Extension Pack 4 %28x86%29.wixpdb" />
+    <None Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.dll.config" />
+    <None Include="MSBuildExtensionPack\4.0.12.0\MSBuild Extension Pack Help.chm" />
+    <None Include="MSBuildExtensionPack\4.0.12.0\x64\MSBuild Extension Pack 4 %28x64%29.msi" />
+    <None Include="MSBuildExtensionPack\4.0.12.0\x64\MSBuild.ExtensionPack.tasks" />
+    <None Include="MSBuildExtensionPack\4.0.12.0\x86\MSBuild Extension Pack 4 %28x86%29.msi" />
+    <None Include="MSBuildExtensionPack\4.0.12.0\x86\MSBuild.ExtensionPack.tasks" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Web References\ServiceProxy\AdHocQueryBuildReportDefinitionReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\AdHocQueryDeleteReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\AdHocQueryGetDefinitionForDataListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\AdHocQueryGetDefinitionForReportReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\AdHocQueryGetDefinitionForSmartQueryReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\AdHocQueryGetDefinitionReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\AdHocQueryGetIDByNameReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\AdHocQueryGetSettingsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\AdHocQueryProcessGetDeferredResultReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\AdHocQueryProcessReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\AdHocQueryRefreshStaticIDSetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\AdHocQuerySaveDataListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\AdHocQuerySaveReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\AdHocQuerySaveReportReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\AdHocQuerySaveReportToCatalogAndReportServerReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\AdHocQuerySaveSearchListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\AdHocQuerySaveSmartQueryReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\AdHocQueryUserGrantedReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\AllProductsExpiredReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\appfxwebservice.wsdl" />
+    <None Include="Web References\ServiceProxy\BatchDefaultsLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\BatchDismissExceptionsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\BatchInsertErrorReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\BatchLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\BatchSaveReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\BatchSettingsGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\BatchSettingsSaveReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\BatchTemplateGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\BatchTypeGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\BatchValidateReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\BusinessProcessGenerateActiveXScriptReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\BusinessProcessInformationReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\BusinessProcessLaunchGetDeferredResultReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\BusinessProcessLaunchReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\BusinessProcessOutputLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CancelAsyncOperationReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CatalogBrowserGetCatalogItemReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CatalogBrowserGetCatalogResourceReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CatalogBrowserGetDependencyTreeReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CatalogBrowserGetItemByIDReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CatalogBrowserGetItemsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CatalogBrowserLoadCatalogItemReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CodeTableEntryAddReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CodeTableEntryDeleteReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CodeTableEntryGetDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CodeTableEntryGetDescriptionReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CodeTableEntryGetIDReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CodeTableEntryGetListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CodeTableEntryUpdateReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CodeTableGetDescriptionReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CodeTableGetLookupInfoReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ConditionSettingExistsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ConfigurationDataInformationReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ConfigurationDataListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CountryGetFormatsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CountryStateGetIDReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CreditCardVaultReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CurrencyExchangeRateGetLatestReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CurrencyExchangeRateGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CurrencyGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\CurrentUserInfoGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\DashboardGetDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\DashboardGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\DataFormGetDropDownValueListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\DataFormInstanceGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\DataFormLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\DataFormSaveReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\DataFormSupportsWebUIReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\DataListGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\DataListLoadMoreReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\DataListLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\DataSourceGetLastUpdatedReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\EmailGetDbMailConfigInfoReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\EmailSendToAppUserReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ExportDefinitionGetIDByNameReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ExportDefinitionLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ExportDefinitionSaveReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\FeatureTipsGetTipSeenReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\FeatureTipsSetTipSeenReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\GetADGroupSidReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\GetAvailableREDatabasesReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\GetFiscalYearLastMonthReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\GetFormatPhonesSettingReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\GetGeneralPurposeEmailStatusReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\GetInstalledProductListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\GetSiteHierarchyReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\GlobalChangeInformationReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\GlobalChangeListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\GlobalChangeParametersLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\GlobalChangeSupportsWebUIReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\IDMapReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\InstalledProductCountReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\InvokeServiceReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\KpiDashboardGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\KpiDashboardSaveReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\KpiGetDynamicGoalValueReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\KpiGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\KpiGetTreeReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\KpiGetValueReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\KpiInstanceDeleteReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\KpiInstanceGetDynamicGoalValueReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\KpiInstanceGetIDByNameReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\KpiInstanceGetListByKpiCatalogIDReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\KpiInstanceGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\KpiInstanceGetStatusReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\KpiInstanceGetTreeReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\KpiInstanceSaveReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\KpiSupportsWebUIReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\MapEntityLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\MergeTaskGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\NotificationGetByRecordTypeReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\NotificationListForRecordReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\PageDefinitionGetListByRecordTypeReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\PageDefinitionGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\PingReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ProcessStatsGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ProductIsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\QueryViewGetLookUpValuesReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\QueryViewGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\QueryViewGetRootListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\QueryViewGetTreeNodeReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\QueryViewGetTreeReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\RecordOperationGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\RecordOperationGetPromptReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\RecordOperationPerformGetDeferredResultReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\RecordOperationPerformReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Web References\ServiceProxy\ReportRootFoldersGetListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ReportsExportReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ReportsGenerateReportModelReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ReportsGetDataSourceReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ReportsGetReportParametersReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ReportsGetReportSpecByNameReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ReportsGetReportSpecReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ReportsGetURLsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ReportsPublishServerReportToCatalogReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ReportsSaveLinkedReportReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\RSSGetFeedReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SearchListFormSupportsWebUIReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SearchListGetListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SearchListGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SearchListGetTranslationReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SearchListLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SearchListReplacementGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SecurityGetRoleFeaturePermTreeReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SecurityUserGrantedFeatureReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SelectionGetQueryInfoReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SelfServicePasswordResetInfoGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SendGeneralPurposeEmailReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ServiceInfoGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ServiceVersionInfo.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SessionEndReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SessionStartReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ShellFeatureSearchReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ShellGetAllTasksReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ShellGetBrandOptionsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ShellGetNavigationReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ShellGetQuickFindTasksReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ShellGetTaskReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ShellGetTaskStatusReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ShellGetTaskWizardReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ShellGetUIWidgetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ShellGetUserAvailableUIWidgetsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ShellSettingsGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\ShellSettingsSaveReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SimpleDataListGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SimpleDataListGetTranslationReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SimpleDataListLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SiteFilterGetRowsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SmartFieldInformationReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SmartFieldListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SmartFieldParametersLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SmartFieldSupportsWebUIReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SmartQueryGetListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SmartQueryGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SmartQueryInstanceDeleteReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SmartQueryInstanceGetIDByNameReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SmartQueryInstanceGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SmartQueryInstanceSaveReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SmartQueryInstanceUserGrantedReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SmartQueryLoadGetDeferredResultReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SmartQueryLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SmartQueryRefreshStaticIDSetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SmartQuerySupportsWebUIReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SyncRoleUsersReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\SystemRoleAddWebLocalUserReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UnlockModuleReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UpdateProductsListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserBatchTemplateSettingsGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserBatchTemplateSettingsUpdateReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserDataFormSettingsGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserDataFormSettingsUpdateReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserDataListSettingsGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserFavoritesGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserFavoritesSaveReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserHomePageGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserHomePageSaveReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserListBuilderSettingsGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserListBuilderSettingsUpdateReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserMultiPageHistoryGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserPageHistoryGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserPageHistoryUpdateReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserPageSettingsGetTabSettingsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserPageSettingsUpdateTabSettingsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserPasswordResetLinkSendReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserPasswordResetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserPasswordResetTokenValidateReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserPrimarySiteGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserSearchListPersistentFieldsGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserSearchListSettingsGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserSearchListSettingsUpdateReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserSearchListTaskHistoryGetListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\ServiceProxy\UserSearchListTaskHistoryGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Omatic.DeploySample.Catalog\Omatic.DeploySample.Catalog.vbproj">
+      <Project>{8a429992-e5d5-400c-b7cf-2811e586a495}</Project>
+      <Name>Omatic.DeploySample.Catalog</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Omatic.DeploySample.PostRevisions\Omatic.DeploySample.PostRevisions.vbproj">
+      <Project>{984774f1-e7c1-4c3e-a277-36026709e7d8}</Project>
+      <Name>Omatic.DeploySample.PostRevisions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Omatic.DeploySample.PreRevisions\Omatic.DeploySample.PreRevisions.vbproj">
+      <Project>{e9e4e919-08b3-49f0-bbc0-3dce0d5f26d9}</Project>
+      <Name>Omatic.DeploySample.PreRevisions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Omatic.DeploySample.UIModel\Omatic.DeploySample.UIModel.vbproj">
+      <Project>{41f646e8-7f65-43f9-baf1-f3d2a17837cd}</Project>
+      <Name>Omatic.DeploySample.UIModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\Interop.COMAdmin.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\Interop.IWshRuntimeLibrary.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\Ionic.Zip.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.BizTalk.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.BizTalk.pdb" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Crm.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Crm.pdb" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Git.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Git.pdb" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Iis7.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Iis7.pdb" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Loggers.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Loggers.pdb" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.pdb" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Sql2008.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Sql2008.pdb" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Sql2012.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Sql2012.pdb" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Sql2014.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Sql2014.pdb" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.StyleCop.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.StyleCop.pdb" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.TaskFactory.Dlr.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.TaskFactory.Dlr.pdb" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.TaskFactory.PowerShell.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.TaskFactory.PowerShell.pdb" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Tfs2012.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Tfs2012.pdb" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Tfs2013.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Tfs2013.pdb" />
+    <None Include="Web References\ServiceProxy\appfxwebservice.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://localhost/bbappfx/appfxwebservice.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\ServiceProxy\</RelPath>
+      <UpdateFromURL>http://localhost/bbappfx/appfxwebservice.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Omatic_Deploy_ServiceProxy_AppFxWebService</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>"$(MSBuildBinPath)\msbuild.exe" "$(ProjectDir)CustomPackage.proj" /p:OutDir=$(OutDir) /t:CustomPackageFiles</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,65 @@
+﻿<AddDataFormTemplateSpec 
+	xmlns="bb_appfx_adddataformtemplate"
+	xmlns:c="bb_appfx_commontypes" 
+	ID="085c872c-4268-43d8-9bf6-df3a688b7e76" 
+	Name="Omatic Deploy Sample Add Data Form"
+	Description="Sample add data form spec" 
+	Author="Omatic"
+	DataFormInstanceID="a7ae64bc-d2d5-42f6-959f-c861233557ed" 
+	RecordType="Omatic Deploy Sample"
+	c:SecurityUIFolder="Deploy Sample"
+	FormHeader="Add a sample"
+	>
+
+	<SPDataForm>
+		<SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_ADD_DEPLOYSAMPLE">
+			<c:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USR_USP_DATAFORMTEMPLATE_ADD_DEPLOYSAMPLE
+(
+    @ID uniqueidentifier = null output,
+    @CHANGEAGENTID uniqueidentifier = null,
+	  @NAME nvarchar(100) = '',
+	  @DESCRIPTION nvarchar(4000) = ''
+)
+as
+
+set nocount on;
+
+if @ID is null
+    set @ID = newid()
+
+if @CHANGEAGENTID is null  
+    exec dbo.USP_CHANGEAGENT_GETORCREATECHANGEAGENT @CHANGEAGENTID output
+
+declare @CURRENTDATE datetime
+set @CURRENTDATE = getdate()
+
+begin try
+	-- handle inserting the data
+	insert into dbo.USR_DEPLOYSAMPLE
+		(ID, NAME, DESCRIPTION, ADDEDBYID, CHANGEDBYID, DATEADDED, DATECHANGED)
+    values
+		(@ID, @NAME, @DESCRIPTION, @CHANGEAGENTID, @CHANGEAGENTID, @CURRENTDATE, @CURRENTDATE)
+	
+end try
+
+begin catch
+    exec dbo.USP_RAISE_ERROR
+    return 1
+end catch
+
+return 0				
+				]]>
+			</c:CreateProcedureSQL>
+		</SaveImplementation>
+	</SPDataForm>
+
+	<FormMetaData xmlns="bb_appfx_commontypes">
+		<FormFields>
+			<FormField FieldID="NAME" Caption="Name" DataType="String" MaxLength="100" />
+			<FormField FieldID="DESCRIPTION" Caption="Description" DataType="String" MaxLength="4000" Multiline="true" />
+		</FormFields>
+	</FormMetaData>
+
+</AddDataFormTemplateSpec>

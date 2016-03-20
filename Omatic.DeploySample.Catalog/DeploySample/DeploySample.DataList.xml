@@ -1,0 +1,41 @@
+﻿<DataListSpec 
+	xmlns="bb_appfx_datalist"
+	xmlns:c="bb_appfx_commontypes" 
+	ID="8bd51b9d-aa84-4c82-9466-8f4de52e1da0" 
+	Name="Omatic Deploy Sample Data List"
+	Description="Sample datalist" 
+	Author="Omatic"
+	c:SecurityUIFolder="Deploy Sample"
+	>
+
+	<!-- define the SP that returns the data for the datalist -->
+	<SPDataList SPName="USR_USP_DATALIST_DEPLOYSAMPLE">
+		<c:CreateProcedureSQL>
+			<![CDATA[
+create procedure dbo.USR_USP_DATALIST_DEPLOYSAMPLE
+(
+	@CONTEXTID uniqueidentifier
+)
+as
+	set nocount on;
+
+	select ID,
+		   NAME,
+		   DESCRIPTION
+	from dbo.USR_DEPLOYSAMPLE
+	where ID = @CONTEXTID
+			]]>
+		</c:CreateProcedureSQL>
+	</SPDataList>
+
+	<Context ContextRecordType="Omatic Deploy Sample" RecordIDParameter="CONTEXTID"/>
+
+	<Output>
+		<OutputFields>
+			<OutputField FieldID="ID" Caption="ID" DataType="Guid" IsHidden="true" />
+			<OutputField FieldID="NAME" DataType="String" Caption="Name" />
+			<OutputField FieldID="DESCRIPTION" DataType="String" Caption="Description"  />
+		</OutputFields>
+	</Output>
+
+</DataListSpec>

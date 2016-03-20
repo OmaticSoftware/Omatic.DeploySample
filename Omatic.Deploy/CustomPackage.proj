@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="DefaultTarget">
+  
+  <Import Project="$(MSBuildProjectDirectory)\Config.xml"/>
+  
+  <!-- Packaging folders -->
+  <PropertyGroup>
+    <PkgFolder Condition="'$(PkgFolder)' == ''">$(OutDir)\Package</PkgFolder>
+    <PkgDeployFilesFolder>$(PkgFolder)\DeployFiles</PkgDeployFilesFolder>
+    <PkgInstallSupportFilesFolder>$(PkgDeployFilesFolder)\InstallSupportFiles</PkgInstallSupportFilesFolder>
+    <PkgBinDllsFolder>$(PkgDeployFilesFolder)\BinDlls</PkgBinDllsFolder>
+    <PkgRevisionDllsFolder>$(PkgDeployFilesFolder)\RevisionDlls</PkgRevisionDllsFolder>
+    <PkgHtmlFormsFolder>$(PkgDeployFilesFolder)\HtmlForms</PkgHtmlFormsFolder>
+    <PkgSqlFilesFolder>$(PkgDeployFilesFolder)\Sql</PkgSqlFilesFolder>
+    <PkgSystemRolesFolder>$(PkgDeployFilesFolder)\SystemRoles</PkgSystemRolesFolder>
+    <PkgTasksFolder>$(PkgDeployFilesFolder)\Tasks</PkgTasksFolder>
+    <PkgCustomTasksFolder>$(PkgTasksFolder)\Custom</PkgCustomTasksFolder>
+    <PkgMsBuildEpTasksFolder>$(PkgTasksFolder)\MSBuildExtensionPack</PkgMsBuildEpTasksFolder>
+    
+    <PkgDeployFilesArchive>$(PkgFolder)\DeployFiles.zip</PkgDeployFilesArchive>
+    
+    <PkgArchive>$(OutDir)\CustomizationPackage.zip</PkgArchive>
+  </PropertyGroup>
+
+  <!-- MSBuild task files, other supporting files -->
+  <ItemGroup>
+    <MsBuildEpTaskFiles Include="$(MSBuildProjectDirectory)\MSBuildExtensionPack\4.0.12.0\Binaries\**" Exclude="$(MSBuildProjectDirectory)\MSBuildExtensionPack\4.0.12.0\Binaries\*pdb" />
+    <CustomTaskFiles Include="$(OutDir)\Omatic.Deploy.dll" />
+    <DeploySupportFiles Include="$(MSBuildProjectDirectory)\CustomizationInstall.ps1" />
+    <DeploySupportFiles Include="$(MSBuildProjectDirectory)\Invoke-MsBuild.psm1" />
+    <InstallSupportFiles Include="$(MSBuildProjectDirectory)\Config.xml" />
+    <InstallSupportFiles Include="$(MSBuildProjectDirectory)\CustomInstall.proj" />
+    <InstallSupportFiles Include="$(MSBuildProjectDirectory)\CustomizationUninstall.ps1" />
+  </ItemGroup>
+  
+  <!-- Custom build tasks to support packaging -->
+  <UsingTask AssemblyFile="$(OutDir)\Omatic.Deploy.dll" TaskName="FixHtmlFormsPaths" />
+  <UsingTask AssemblyFile="$(MSBuildProjectDirectory)\MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.dll" TaskName="MSBuild.ExtensionPack.Compression.Zip" />
+    
+  <Target Name="CustomPackageFiles">
+    <!-- Remove old package folders (if applicable) and create new ones -->
+    <Message Text="Using PkgFolder: $([System.IO.Path]::GetFullPath($(PkgFolder)))" />
+    <RemoveDir Directories="$(PkgFolder)" Condition="Exists($(PkgFolder))" ContinueOnError="true" />
+    <Warning Condition="Exists($(PkgFolder))" Message="Unable to delete '$(PkgFolder)', ensure there aren't any open files or folders.  Package copy is proceeding." />
+    
+    <MakeDir Directories="$(PkgFolder);$(PkgDeployFilesFolder);$(PkgBinDllsFolder);$(PkgRevisionDllsFolder);$(PkgHtmlFormsFolder);$(PkgSqlFilesFolder);$(PkgSystemRolesFolder);$(PkgCustomTasksFolder);$(PkgMsBuildEpTasksFolder)" />    
+    
+    <!-- Copy bin DLLs, revision DLLs -->
+    <Copy SourceFiles="@(PkgBinDll)" DestinationFolder="$(PkgBinDllsFolder)" />
+    <Copy SourceFiles="@(PkgRevisionDll)" DestinationFolder="$(PkgRevisionDllsFolder)" />
+    
+    <!-- Remove everything before 'htmlforms' in HtmlForms paths -->
+    <FixHtmlFormsPaths Paths="@(PkgHtmlForms)" DestinationFolder="$(PkgHtmlFormsFolder)">
+      <Output TaskParameter="FixedPaths" ItemName="FixedHtmlForms" />
+    </FixHtmlFormsPaths>
+    <Copy SourceFiles="@(HtmlForms)" DestinationFiles="@(FixedHtmlForms)"/>
+    
+    <!-- Copy SQL files, system roles, MSBuild tasks -->
+    <Copy SourceFiles="@(PkgSqlFile)" DestinationFolder="$(PkgSqlFilesFolder)" />
+    <Copy SourceFiles="@(PkgSystemRole)" DestinationFolder="$(PkgSystemRolesFolder)" />
+    <Copy SourceFiles="@(MsBuildEpTaskFiles)" DestinationFolder="$(PkgMsBuildEpTasksFolder)" />
+    <Copy SourceFiles="@(CustomTaskFiles)" DestinationFolder="$(PkgCustomTasksFolder)" />
+    
+    <!-- Copy files to support deploy/installation -->
+    <Copy SourceFiles="@(DeploySupportFiles)" DestinationFolder="$(PkgFolder)" />
+    <Copy SourceFiles="@(InstallSupportFiles)" DestinationFolder="$(PkgInstallSupportFilesFolder)" />
+
+    <!-- Create archive with deploy files -->
+    <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressPath="$(PkgDeployFilesFolder)" ZipFileName="$(PkgDeployFilesArchive)" RemoveRoot="$([System.IO.Path]::GetFullPath($(OutDir)))" />
+    <!-- Create another archive wrapping the deploy files archive, add install PS1 script -->
+    <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressFiles="@(DeploySupportFiles)" ZipFileName="$(PkgArchive)" RemoveRoot="$(MSBuildProjectDirectory)" />
+    <MSBuild.ExtensionPack.Compression.Zip TaskAction="AddFiles" ZipFileName="$(PkgArchive)" CompressFiles="$(PkgDeployFilesArchive)" RemoveRoot="$(PkgFolder)" />
+    
+    
+  </Target>
+  
+  <Target Name="DefaultTarget">
+    <Message Text="PkgFolder: $(PkgFolder)" />
+    <Message Text="PkgDeployFilesFolder: $(PkgDeployFilesFolder)" />
+    <Message Text="PkgBinDllsFolder: $(PkgBinDllsFolder)" />
+    <Message Text="PkgRevisionDllsFolder: $(PkgRevisionDllsFolder)" />
+    <Message Text="PkgHtmlFormsFolder: $(PkgHtmlFormsFolder)" />
+    <Message Text="PkgDeployFilesArchive: $(PkgDeployFilesArchive)" />
+  </Target>
+
+  
+</Project>

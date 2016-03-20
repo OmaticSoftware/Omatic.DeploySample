@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DBRevisions xmlns="bb_appfx_dbrevisions">
+  <DBRevision ID="1">
+    <Comment>This is a comment from pre-revision ID 1</Comment>
+  </DBRevision>
+  <DBRevision ID="2">
+    <ExecuteSql>select 1;</ExecuteSql>
+  </DBRevision>
+</DBRevisions>

@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="ListFiles">
+  
+  <!-- PACKAGING SECTION - The following items are related to what goes into the customization package -->
+  
+  <!-- DLLs for vroot\bin\custom folder -->
+  <ItemGroup>
+    <PkgBinDll Include="$(OutDir)\Omatic.DeploySample.Catalog.dll" />
+    <PkgBinDll Include="$(OutDir)\Omatic.DeploySample.UIModel.dll" />
+  </ItemGroup>
+
+  <!-- HTML files for vroot\browser\htmlforms\custom folder -->
+  <!--<ItemGroup>
+    <PkgHtmlForms Include="$(MSBuildProjectDirectory)\..\Blackbaud.CustomFx.GratefulPatient.UIModel\PkgHtmlForms\**" />
+  </ItemGroup>-->
+
+  <!-- DLLs for MSBuild\Custom\Revisions -->
+  <ItemGroup>
+    <PkgRevisionDll Include="$(OutDir)\Omatic.DeploySample.PreRevisions.dll" />
+    <PkgRevisionDll Include="$(OutDir)\Omatic.DeploySample.PostRevisions.dll" />
+  </ItemGroup>
+
+  <!-- System roles -->
+  <ItemGroup>
+    <PkgSystemRole Include="..\SystemRoles\*.xml" />
+  </ItemGroup>
+
+  <!-- SQL files for executing after customizations and system roles have been loaded -->
+  <ItemGroup>
+    <PkgSqlFile Include="..\SQL\*.sql" />
+  </ItemGroup>
+
+  <!-- END PACKAGING SECTION -->
+  
+  
+  
+
+  <!-- INSTALLATION SECTION - The following items are related to what gets loaded to CRM -->
+  
+  <!-- Package files to load -->
+  <ItemGroup>
+    <CatalogItem Include="Omatic.DeploySample.Catalog.DeploySample.Package.xml">
+      <SourceInfo>Omatic.DeploySample.Catalog.DLL</SourceInfo>
+    </CatalogItem>
+    <!-- other package references here -->
+  </ItemGroup>
+  
+  <!-- Revision DLLS to load -->
+  <ItemGroup>
+    <!-- Revisions to run before customization loading -->
+    <PreRevisionAssembly Include="$(MSBuildProjectDirectory)\RevisionDlls\Omatic.DeploySample.PreRevisions.dll" />
+    
+    <!-- Revisions to run after customization loading -->
+    <PostRevisionAssembly Include="$(MSBuildProjectDirectory)\RevisionDlls\Omatic.DeploySample.PostRevisions.dll" />
+  </ItemGroup>
+  
+  <!-- System roles to load -->
+  <ItemGroup>
+    <SystemRole Include="$(MSBuildProjectDirectory)\SystemRoles\*.xml" />
+  </ItemGroup>
+  
+  <!-- SQL files to execute, including parameters -->
+  <ItemGroup>
+    <SqlFile Include="$(MSBuildProjectDirectory)\SQL\*.sql" />
+  </ItemGroup>
+
+  
+  <!-- END INSTALLATION SECTION -->
+  
+  
+
+  <Target Name="ListFiles">
+    <Message Text="BinDll: @(BinDll)" />
+    <Message Text="RevisionDll: @(RevisionDll)" />
+    <Message Text="HtmlForms: @(HtmlForms)" />
+    <Message Text="SqlFile: @(SqlFile)" />
+    <Message Text="SystemRole: @(SystemRole)" />
+  </Target>
+</Project>

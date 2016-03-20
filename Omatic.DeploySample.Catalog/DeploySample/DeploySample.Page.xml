@@ -1,0 +1,25 @@
+﻿<PageDefinitionSpec 
+    xmlns="bb_appfx_pagedefinition" 
+    xmlns:c="bb_appfx_commontypes"
+    ID="0c42b790-af89-42e6-a930-5adcaf69f3a3"
+    Name="Omatic Deploy Sample Page"
+    Description="Sample customization"
+    Author="Omatic"
+    >
+
+	<PageHeader Caption="Deploy Sample" ImageKey="CATALOG:Omatic.DeploySample.Catalog,Omatic.DeploySample.Catalog.omatic_32.png" />
+
+	<Tabs>
+		<Tab ID="3181d6e3-e8db-4371-a5fa-b32b56edce3c" Caption="Tab">
+			<Sections>
+				<Section ID="b6bd4162-a436-4821-aa44-16dca1fbcf53" Caption="Section caption">
+					<DataList ID="8bd51b9d-aa84-4c82-9466-8f4de52e1da0">
+						<RenderStyle>
+							<StandardView/>
+						</RenderStyle>
+					</DataList>
+				</Section>
+			</Sections>
+		</Tab>
+	</Tabs>
+</PageDefinitionSpec>
