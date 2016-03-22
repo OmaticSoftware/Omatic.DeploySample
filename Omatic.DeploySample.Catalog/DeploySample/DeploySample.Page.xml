@@ -18,6 +18,25 @@
 							<StandardView/>
 						</RenderStyle>
 					</DataList>
+          <Actions>
+            <Action ID="7310F24D-D7EC-4E9B-841B-24DFE5F9B140" Caption="Add" ImageKey="res:newitem">
+              <c:ShowAddDataForm DataFormID="a7ae64bc-d2d5-42f6-959f-c861233557ed" />
+            </Action>
+            <Action ID="F81154EE-2977-419A-9ABF-0727AE0E2006" Caption="Edit" ImageKey="res:edit" DefaultAction="true">
+              <c:ShowDataForm DataFormID="4b2f9de6-2c11-4fcb-8abf-60970b6d6a23">
+                <c:ActionContext>
+                  <c:SectionField>ID</c:SectionField>
+                </c:ActionContext>
+              </c:ShowDataForm>
+            </Action>
+            <Action ID="9999707A-26F0-4386-B473-CBE8E96CB0CC" Caption="Delete" ImageKey="res:delete">
+              <c:ExecuteRecordOperation RecordOperationID="00e214a1-2fe1-46d5-b4d5-24e08ca88fe2" ShowPrompt="true">
+                <c:ActionContext>
+                  <c:SectionField>ID</c:SectionField>
+                </c:ActionContext>
+              </c:ExecuteRecordOperation>
+            </Action>
+          </Actions>
 				</Section>
 			</Sections>
 		</Tab>

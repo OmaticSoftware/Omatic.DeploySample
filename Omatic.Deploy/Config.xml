@@ -61,6 +61,10 @@
   
   <!-- SQL files to execute, including parameters -->
   <ItemGroup>
+    <SqlParameters Include="true">
+      <name>%24(NetworkImportPath)</name>
+      <value>c:\temp\</value>
+    </SqlParameters>
     <SqlFile Include="$(MSBuildProjectDirectory)\SQL\*.sql" />
   </ItemGroup>
 

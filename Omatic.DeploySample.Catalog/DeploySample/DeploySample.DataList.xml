@@ -13,9 +13,6 @@
 		<c:CreateProcedureSQL>
 			<![CDATA[
 create procedure dbo.USR_USP_DATALIST_DEPLOYSAMPLE
-(
-	@CONTEXTID uniqueidentifier
-)
 as
 	set nocount on;
 
@@ -23,12 +20,10 @@ as
 		   NAME,
 		   DESCRIPTION
 	from dbo.USR_DEPLOYSAMPLE
-	where ID = @CONTEXTID
 			]]>
 		</c:CreateProcedureSQL>
 	</SPDataList>
 
-	<Context ContextRecordType="Omatic Deploy Sample" RecordIDParameter="CONTEXTID"/>
 
 	<Output>
 		<OutputFields>

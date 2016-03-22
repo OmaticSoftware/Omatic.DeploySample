@@ -1,0 +1,36 @@
+﻿<RecordOperationSpec 
+	xmlns="bb_appfx_recordoperation"
+	xmlns:c="bb_appfx_commontypes" 
+	ID="00e214a1-2fe1-46d5-b4d5-24e08ca88fe2" 
+	Name="Omatic Deploy Sample Record Operation" 
+	Description="Sample record operation spec"
+	Author="Omatic"
+	OperationType="Delete"
+	RecordType="Omatic Deploy Sample"
+	c:SecurityUIFolder="Deploy Sample"
+	>
+
+	<SPRecord>
+		<SPOperationImplementation SPName="USR_USP_RECORDOPERATION_DEPLOYSAMPLE">
+			<c:CreateProcedureSQL>
+				<![CDATA[
+create procedure dbo.USR_USP_RECORDOPERATION_DEPLOYSAMPLE
+(
+	@ID uniqueidentifier,
+	@CHANGEAGENTID uniqueidentifier
+)
+as begin
+	exec USP_USR_DEPLOYSAMPLE_DELETEBYID_WITHCHANGEAGENTID @ID, @CHANGEAGENTID
+	return 0;
+	
+end
+				]]>
+			</c:CreateProcedureSQL>
+		</SPOperationImplementation>
+	</SPRecord>
+
+	<Prompt>
+		<StandardPrompt Text="Are you sure you want to continue?" />
+	</Prompt>
+
+</RecordOperationSpec>
