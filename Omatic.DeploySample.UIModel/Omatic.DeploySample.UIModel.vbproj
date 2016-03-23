@@ -96,14 +96,25 @@
     <Compile Include="..\VersionInfo.vb">
       <Link>VersionInfo.vb</Link>
     </Compile>
+    <Compile Include="DeploySample\OmaticDeploySampleAddDataFormUIModel.CodeGen.vb">
+      <DependentUpon>OmaticDeploySampleAddDataFormUIModel.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DeploySample\OmaticDeploySampleAddDataFormUIModel.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="htmlforms\custom\omatic.deploysample\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="UIModel.ruleset" />
     <None Include="postbuild.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Omatic.DeploySample.Catalog\DeploySample\DeploySample.Add.xml">
+      <Link>LinkedSpecs\DeploySample.Add.xml</Link>
+    </None>
+    <Content Include="DeploySample\OmaticDeploySampleAddDataFormUIModel.xml">
+      <DependentUpon>OmaticDeploySampleAddDataFormUIModel.vb</DependentUpon>
+    </Content>
+    <Content Include="htmlforms\custom\OmaticDeploySampleAddDataForm.html" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
