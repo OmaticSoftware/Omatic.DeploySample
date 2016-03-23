@@ -1,5 +1,28 @@
 ﻿<#
-   *) execute msbuild against MSBuild\Custom\CustomInstall.proj
+.SYNOPSIS
+
+Copies CRM customization files to appropriate folders, optionally executes CRM customization installation.
+
+.PARAMETER LogFile
+
+Full path to log file for installation.  Defaults to "InstallLog.txt" in the script's folder.
+
+.PARAMETER InstanceName
+
+BB CRM instance name to use.  Defaults to "" (i.e. blank).
+
+.PARAMETER InstallWithRestore
+
+Runs MSBuild installation with "InstallWithRestore" target, which restores the template DB.
+
+.PARAMETER NoInstall
+
+Bypasses MSBuild installation, making this a copy-only install.
+
+.PARAMETER NonInteractive
+
+Runs script without any user prompting.
+
   #>
 param 
 (
@@ -274,9 +297,9 @@ function Run-MSBuildInstall {
 
 	$msBuildResult = $True
 	if ($NonInteractive) {
-		$msBuildResult = Invoke-MsBuild -Path $msBuildPath -MsBuildParameters $msBuildParams -BuildLogDirectoryPath $logPath
+		$msBuildResult = Invoke-MsBuild -Path $msBuildPath -MsBuildParameters $msBuildParams -BuildLogDirectoryPath $logPath -KeepBuildLogOnSuccessfulBuilds
 	} else {
-		$msBuildResult = Invoke-MsBuild -Path $msBuildPath -MsBuildParameters $msBuildParams -BuildLogDirectoryPath $logPath -ShowBuildWindowAndPromptForInputBeforeClosing
+		$msBuildResult = Invoke-MsBuild -Path $msBuildPath -MsBuildParameters $msBuildParams -BuildLogDirectoryPath $logPath -ShowBuildWindowAndPromptForInputBeforeClosing -KeepBuildLogOnSuccessfulBuilds
 	}
 
 	if (-not $msBuildResult) {
