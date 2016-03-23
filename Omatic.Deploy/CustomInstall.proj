@@ -168,7 +168,8 @@ end;"
       IgnoreScriptErrors="false"
       UseTransaction="true"
       Files="@(SqlFile)"
-      ConnectionString="$(Platform_SQLServerConnect)" />
+      ConnectionString="$(Platform_SQLServerConnect)" 
+      Parameters="@(SqlParameters)" />
 
   </Target>
 
