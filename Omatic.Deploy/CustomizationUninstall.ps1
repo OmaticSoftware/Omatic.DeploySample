@@ -1,5 +1,18 @@
 ﻿<# 
-This script will perform uninstall
+.SYNOPSIS
+Uninstalls BB CRM customization components using manifes file  "BBCRMCustomInstallManifest.txt"
+
+.PARAMETER LogFile
+
+Full path to file for uninstall logging output.
+
+.PARAMETER ManfiestFile
+
+Alternative manfiest file name.  Defaults to "BBCRMCustomInstallManifest.txt" in the script's folder.
+
+.PARAMETER NonInteractive
+
+Switch to indicate script should not prompt for user input at any point.
 #>
 param 
 (
@@ -33,7 +46,6 @@ If (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
 	}
 	$argList += $MyInvocation.UnboundArguments
 	#"No Administrative rights, it will display a popup window asking user for Admin rights"
-	write-Host $argList
 	Start-Process "$psHome\powershell.exe" -Verb runAs -WorkingDirectory $pwd -ArgumentList $argList
 	break
 }
@@ -94,8 +106,7 @@ try
 		[System.IO.Path]::Combine($PSScriptRoot, 'RevisionDlls'),
 		[System.IO.Path]::Combine($PSScriptRoot, 'SQL'),
 		[System.IO.Path]::Combine($PSScriptRoot, 'SystemRoles'),
-		[System.IO.Path]::Combine($PSScriptRoot, 'Tasks'),
-		[System.IO.Path]::Combine($PSScriptRoot, 'BBCRMCustomInstallManifest.txt')
+		[System.IO.Path]::Combine($PSScriptRoot, 'Tasks')
 	)
 
 	foreach ($line in (Get-Content $ManifestFile)) {
@@ -116,6 +127,9 @@ try
 			}
 		}
 	}
+    
+    # Don't forget to clean up manifest file
+    $cleanupArr += $ManifestFile
 
 	foreach ($cleanup in $cleanupArr) {
 		if (Test-Path $cleanup) {
