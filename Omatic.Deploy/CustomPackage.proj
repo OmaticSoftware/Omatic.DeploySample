@@ -54,7 +54,7 @@
     <FixHtmlFormsPaths Paths="@(PkgHtmlForms)" DestinationFolder="$(PkgHtmlFormsFolder)">
       <Output TaskParameter="FixedPaths" ItemName="FixedHtmlForms" />
     </FixHtmlFormsPaths>
-    <Copy SourceFiles="@(HtmlForms)" DestinationFiles="@(FixedHtmlForms)"/>
+    <Copy SourceFiles="@(PkgHtmlForms)" DestinationFiles="@(FixedHtmlForms)"/>
     
     <!-- Copy SQL files, system roles, MSBuild tasks -->
     <Copy SourceFiles="@(PkgSqlFile)" DestinationFolder="$(PkgSqlFilesFolder)" />

@@ -1,20 +1,20 @@
-﻿<AddDataFormTemplateSpec 
-	xmlns="bb_appfx_adddataformtemplate"
-	xmlns:c="bb_appfx_commontypes" 
-	ID="085c872c-4268-43d8-9bf6-df3a688b7e76" 
-	Name="Omatic Deploy Sample Add Data Form"
-	Description="Sample add data form spec" 
-	Author="Omatic"
-	DataFormInstanceID="a7ae64bc-d2d5-42f6-959f-c861233557ed" 
-	RecordType="Omatic Deploy Sample"
-	c:SecurityUIFolder="Deploy Sample"
-	FormHeader="Add a sample"
-	>
+<AddDataFormTemplateSpec
+    xmlns="bb_appfx_adddataformtemplate"
+    xmlns:c="bb_appfx_commontypes"
+    ID="085c872c-4268-43d8-9bf6-df3a688b7e76"
+    Name="Omatic Deploy Sample Add Data Form"
+    Description="Sample add data form spec"
+    Author="Omatic"
+    DataFormInstanceID="a7ae64bc-d2d5-42f6-959f-c861233557ed"
+    RecordType="Omatic Deploy Sample"
+    c:SecurityUIFolder="Deploy Sample"
+    FormHeader="Add a sample"
+    >
 
-	<SPDataForm>
-		<SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_ADD_DEPLOYSAMPLE">
-			<c:CreateProcedureSQL>
-				<![CDATA[
+  <SPDataForm>
+    <SaveImplementation SPName="USR_USP_DATAFORMTEMPLATE_ADD_DEPLOYSAMPLE">
+      <c:CreateProcedureSQL>
+        <![CDATA[
 create procedure dbo.USR_USP_DATAFORMTEMPLATE_ADD_DEPLOYSAMPLE
 (
     @ID uniqueidentifier = null output,
@@ -51,15 +51,22 @@ end catch
 
 return 0				
 				]]>
-			</c:CreateProcedureSQL>
-		</SaveImplementation>
-	</SPDataForm>
+      </c:CreateProcedureSQL>
+    </SaveImplementation>
+  </SPDataForm>
 
-	<FormMetaData xmlns="bb_appfx_commontypes">
-		<FormFields>
-			<FormField FieldID="NAME" Caption="Name" DataType="String" MaxLength="100" />
-			<FormField FieldID="DESCRIPTION" Caption="Description" DataType="String" MaxLength="4000" Multiline="true" />
-		</FormFields>
-	</FormMetaData>
+  <FormMetaData xmlns="bb_appfx_commontypes">
+    <FormFields>
+      <FormField FieldID="NAME" Caption="Name" DataType="String" MaxLength="100" />
+      <FormField FieldID="DESCRIPTION" Caption="Description" DataType="String" MaxLength="4000" Multiline="true" />
+    </FormFields>
+
+    <WebUIComponent>
+      <UIModel AssemblyName="Omatic.DeploySample.UIModel.dll" ClassName="Omatic.DeploySample.UIModel.OmaticDeploySampleAddDataFormUIModel" />
+      <WebUI>
+        <ExternalResource Url="browser/htmlforms/custom/OmaticDeploySampleAddDataForm.html" />
+      </WebUI>
+    </WebUIComponent>
+  </FormMetaData>
 
 </AddDataFormTemplateSpec>

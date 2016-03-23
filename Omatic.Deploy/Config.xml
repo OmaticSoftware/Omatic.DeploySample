@@ -10,9 +10,9 @@
   </ItemGroup>
 
   <!-- HTML files for vroot\browser\htmlforms\custom folder -->
-  <!--<ItemGroup>
-    <PkgHtmlForms Include="$(MSBuildProjectDirectory)\..\Blackbaud.CustomFx.GratefulPatient.UIModel\PkgHtmlForms\**" />
-  </ItemGroup>-->
+  <ItemGroup>
+    <PkgHtmlForms Include="$(MSBuildProjectDirectory)\..\Omatic.DeploySample.UIModel\htmlforms\**" />
+  </ItemGroup>
 
   <!-- DLLs for MSBuild\Custom\Revisions -->
   <ItemGroup>
