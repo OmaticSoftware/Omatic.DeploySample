@@ -31,7 +31,10 @@ Namespace Omatic.Deploy
         Public Property WebServiceDbName As String
         <Required()>
         Public Property WebServiceUrl As String
+        Public Property InfinityUserName As String
+        Public Property InfinityPassword As String
         Public Property TimeOutSeconds As Integer
+
 #End Region
 
         Public Sub New()
@@ -66,7 +69,11 @@ Namespace Omatic.Deploy
 
             Dim successfulLoad As Boolean = True
 
-            proxy.UseDefaultCredentials = True
+            If Not [String].IsNullOrEmpty(InfinityUserName) Then
+                proxy.Credentials = New System.Net.NetworkCredential(InfinityUserName, InfinityPassword)
+            Else
+                proxy.UseDefaultCredentials = True
+            End If
 
             If TimeOutSeconds > 0 Then
                 proxy.Timeout = TimeOutSeconds * 1000
@@ -74,6 +81,8 @@ Namespace Omatic.Deploy
                 proxy.Timeout = 3000000
             End If
 
+
+            Log.LogMessage("User: {0}", If([String].IsNullOrEmpty(InfinityUserName), "[Default credentials]", InfinityUserName))
             Log.LogMessage("URL: {0}" & vbLf & "DB: {1}", WebServiceUrl, WebServiceDbName)
             Log.LogMessage("Timeout: {0}s", proxy.Timeout / 1000)
 
