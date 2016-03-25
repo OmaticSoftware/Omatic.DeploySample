@@ -1,7 +1,7 @@
 # Omatic.DeploySample
 BB CRM package and deploy sample implementation.  This Visual Studio solution serves as a reference for automating the packaging and deployment of BB CRM customizations.  
 
-See [the wiki](https://github.com/OmaticSoftware/Omatic.DeploySample/wiki) for documentation on [getting the sample project working](https://github.com/OmaticSoftware/Omatic.DeploySample/wiki/Get-the-sample-project-working), [understanding how it works](https://github.com/OmaticSoftware/Omatic.DeploySample/wiki/How-does-it-work%3F), and/or [learning how you can use the pieces provided in your own solution](https://github.com/OmaticSoftware/Omatic.DeploySample/wiki/How-can-I-use-it%3F).
+See [the wiki](https://github.com/OmaticSoftware/Omatic.DeploySample/wiki) for documentation on getting the sample project working and/or understanding how it works.
 
 ## Overview
 
