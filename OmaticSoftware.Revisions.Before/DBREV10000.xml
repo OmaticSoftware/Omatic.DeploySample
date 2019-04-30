@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DBRevisions xmlns="bb_appfx_dbrevisions">
+
+  <DBRevision ID="5">
+    <ExecuteSql>
+      <![CDATA[
+      select 'Initial revision';
+      ]]>
+    </ExecuteSql>
+  </DBRevision>
+
+  <!-- Template, update the ID -->
+  <!--<DBRevision ID="5">
+    <ExecuteSql>
+      <![CDATA[
+      ]]>
+    </ExecuteSql>
+  </DBRevision>-->
+</DBRevisions>

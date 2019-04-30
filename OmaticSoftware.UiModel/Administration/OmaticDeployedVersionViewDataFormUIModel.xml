@@ -1,0 +1,10 @@
+﻿<UIModelWizardMetadata>
+  <SpecFileName>DeployedVersion.View.xml</SpecFileName>
+  <Namespace>OmaticSoftware.UiModel</Namespace>
+  <ClassName>OmaticDeployedVersionViewDataFormUIModel</ClassName>
+  <HtmlInfo GenerateHtml="true">
+    <HtmlFile>OmaticDeployedVersionViewDataForm.html</HtmlFile>
+    <HtmlFolder>htmlforms\custom\omaticsoftware.uimodel\</HtmlFolder>
+  </HtmlInfo>
+  <GenerateFromDatabase>true</GenerateFromDatabase>
+</UIModelWizardMetadata>

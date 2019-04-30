@@ -1,0 +1,319 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="DefaultTarget">
+    <!-- 
+  TODO: Restore, revisions, SQL scripts
+  -->
+
+    <!-- IMPORTS -->
+    <PropertyGroup>
+        <LocalConfig Condition="'$(LocalConfig)' == ''">$(MSBuildProjectDirectory)\LocalConfig.xml</LocalConfig>
+    </PropertyGroup>
+
+    <!-- Import the standard BB CRM project file.  Note this will also import PlatformOptions.xml and ProductOptions.xml -->
+    <Import Project="$(MSBuildProjectDirectory)\..\BlackbaudPlatform.xml" />
+    <Import Condition="Exists('$(LocalConfig)')" Project="$(LocalConfig)"/>
+    <Import Project="$(MSBuildProjectDirectory)\Config.xml" />
+
+
+    <!-- CUSTOM TASKS -->
+    <UsingTask AssemblyFile="$(MSBuildProjectDirectory)\Tasks\Custom\OmaticSoftware.Deploy.dll" TaskName="CustomLoadCatalogItems" />
+    <UsingTask AssemblyFile="$(MSBuildProjectDirectory)\Tasks\Custom\OmaticSoftware.Deploy.dll" TaskName="CheckDbRevKey" />
+    <UsingTask AssemblyFile="$(MSBuildProjectDirectory)\Tasks\MSBuildExtensionPack\MSBuild.ExtensionPack.dll" TaskName="MSBuild.ExtensionPack.SqlServer.SqlExecute" />
+
+    <!-- Targets -->
+    <Target Name="Install" DependsOnTargets="LoadCustomizations" />
+    <Target Name="InstallWithRestore" DependsOnTargets="RestoreDB;ConfigureDB;CustomConfigureReportServer;Install" />
+
+    <!-- Template DB to restore -->
+    <PropertyGroup>
+        <Custom_RestoreDBConnString Condition="'$(Custom_RestoreDBConnString)' == ''">$(Platform_SQLServerConnectNoDB)</Custom_RestoreDBConnString>
+        <Platform_TemplateDBPath Condition="'$(Platform_TemplateDBPath)'==''"></Platform_TemplateDBPath>
+    </PropertyGroup>
+
+    <Target Name="RestoreDB">
+        <!-- This is the default SQL for dropping DBs, alternatively you can specify <CustomDbDropScript> items to indicate scripts to run 
+    for dropping DBs.  Custom drop scripts are used for refreshing DBs in replicated (HADR) environments -->
+        <MSBuild.ExtensionPack.SqlServer.SqlExecute
+             Condition="'@(CustomDbDropScript)' == ''"
+             TaskAction="Execute"
+             ConnectionString="$(Platform_SQLServerConnectNoDB)"
+             Sql="IF DB_ID (N'$(Platform_SQLServerDatabaseName)') IS NOT NULL
+			    BEGIN
+				    ALTER DATABASE [$(Platform_SQLServerDatabaseName)] SET SINGLE_USER WITH ROLLBACK IMMEDIATE
+            DROP DATABASE [$(Platform_SQLServerDatabaseName)]
+          END"
+             CommandTimeout="900" />
+
+        <!-- Alternatively, execute <CustomDbDropScript> files, if they are specified -->
+        <CallTarget Targets="CustomDropDb" Condition="'@(CustomDbDropScript)' != ''" />
+
+        <!-- Restore the DB -->
+        <RestoreDB DatabaseName="$(Platform_SQLServerDatabaseName)"
+                   BackupFile="$(Platform_TemplateDBPath)"
+                   DataPath="$(Platform_SQLServerDataPath)"
+                   LogPath="$(Platform_SQLServerLogPath)"
+                   ConnectString="$(Custom_RestoreDBConnString)"
+                   OverWriteExistingDB="false"
+               />
+
+        <!-- Set up master key, change DB owner to 'sa' -->
+        <Message Text="Re-encrypting DB master key (MSBuild logging temporarily suppressed)" />
+        <MSBuild.ExtensionPack.SqlServer.SqlExecute
+              SuppressTaskMessages="true"
+              TaskAction="Execute"
+              Sql="use [$(Platform_SQLServerDatabaseName)]; EXEC sp_changedbowner 'sa';
+			  OPEN MASTER KEY DECRYPTION BY PASSWORD = '$(DBMasterKeyPassword)';
+			  ALTER MASTER KEY DROP ENCRYPTION BY SERVICE MASTER KEY
+			  ALTER MASTER KEY ADD ENCRYPTION BY SERVICE MASTER KEY
+			  ALTER MASTER KEY REGENERATE WITH ENCRYPTION BY PASSWORD = '$(DBMasterKeyPassword)';
+			  CLOSE master KEY"
+              ConnectionString="$(Custom_RestoreDBConnString)" />
+
+        <!-- If CustomPostRestoreDbScript items are specified, run them -->
+        <CallTarget Targets="CustomPostRestoreDB" Condition="'@(CustomPostRestoreDbScript)' != ''" />
+    </Target>
+
+    <!-- This target is called by "RestoreDB" if CustomDbDropScript items are specified -->
+    <Target Name="CustomDropDb" Outputs="%(CustomDbDropScript.Identity)">
+        <MSBuild.ExtensionPack.SqlServer.SqlExecute
+         TaskAction="Execute"
+         IgnoreScriptErrors="true"
+         Files="@(CustomDbDropScript)"
+         ConnectionString="%(ConnString)"
+         CommandTimeout="3600" />
+    </Target>
+
+    <!-- This target is called by "RestoreDB" if CustomPostRestoreDbScript items are specified -->
+    <Target Name="CustomPostRestoreDB" Outputs="%(CustomPostRestoreDbScript.Identity)">
+        <PropertyGroup>
+            <ConnString Condition="'%(CustomPostRestoreDbScript.ConnString)' == ''">$(Platform_SQLServerConnect)</ConnString>
+            <ConnString Condition="'%(CustomPostRestoreDbScript.ConnString)' != ''">%(CustomPostRestoreDbScript.ConnString)</ConnString>
+        </PropertyGroup>
+
+        <Message Text="Using ConnString: $(ConnString)" />
+
+        <MSBuild.ExtensionPack.SqlServer.SqlExecute
+         TaskAction="Execute"
+         IgnoreScriptErrors="true"
+         Files="@(CustomPostRestoreDbScript)"
+         ConnectionString="$(ConnString)"
+         CommandTimeout="5400" />
+    </Target>
+
+    <Target Name="ConfigureDB">
+        <!-- Set recovery model -->
+        <PropertyGroup>
+            <RecoveryModel>SIMPLE</RecoveryModel>
+            <RecoveryModel Condition="'$(UseFullRecoveryModel)' == 'true'">FULL</RecoveryModel>
+        </PropertyGroup>
+        <MSBuild.ExtensionPack.SqlServer.SqlExecute
+          TaskAction="Execute"
+          Sql="ALTER DATABASE [$(Platform_SQLServerDatabaseName)] SET RECOVERY $(RecoveryModel)"
+          ConnectionString="$(Platform_SQLServerConnectNoDB)" />
+
+        <!-- Drop existing users and groups -->
+        <MSBuild.ExtensionPack.SqlServer.SqlExecute
+          TaskAction="Execute"
+            UseTransaction="true"
+          Sql="declare @MAXLOOP int = 50, @LOOPCOUNT int = 0, @SQL nvarchar(200);
+while exists(select * from sys.database_principals where type = 'U' or type = 'G') and @LOOPCOUNT &lt; @MAXLOOP
+begin 
+	select top 1 @SQL = name from sys.database_principals where type = 'U' or type = 'G'
+	set @SQL = 'DROP USER [' + @SQL + ']'
+	EXECUTE sp_executesql @SQL
+	set @LOOPCOUNT = @LOOPCOUNT + 1
+end;"
+          ConnectionString="$(Platform_SQLServerConnect)" />
+
+        <!-- Add Database user -->
+        <AddUsers ConnectString="$(Platform_SQLServerConnect)" Users="@(User)" />
+
+        <!-- Run service revisions if necessary -->
+        <CheckDbRevKey DeployPath="$(Platform_DeployPath)" SqlConnectString="$(Platform_SQLServerConnect)">
+            <Output TaskParameter="DBRevisionsNeeded" PropertyName="RunRevisions" />
+        </CheckDbRevKey>
+
+        <RunServiceRevisions Condition="'$(RunRevisions)' == 'True'"
+                SqlConnectString="$(Platform_SQLServerConnect)"
+                CatalogAssembliesPath="$(Platform_DeployPath)\bin"
+                SqlClrAssemblies="@(DatabaseAssemblies->'$(MSBuildProjectDirectory)\..\%(RelativeDir)%(Filename)%(Extension)')"
+                RevisionsAssemblies="@(ServiceRevisions->'$(MSBuildProjectDirectory)\..\%(RelativeDir)%(Filename)%(Extension)')"
+                ReportDeployUser="$(Platform_ReportServerDeployUser)"
+                ReportDeployUserPassword="$(Platform_ReportServerDeployPassword)"
+		/>
+
+        <!-- Add currently executing user as an admin -->
+        <AddApplicationUser ConnectString="$(Platform_SQLServerConnect)"
+                            UserName="$(USERDOMAIN)\$(USERNAME)"
+                            IsSysAdmin="true" />
+
+        <CallTarget Targets="AddCustomApplicationUsers_Admin" />
+        <CallTarget Targets="AddCustomApplicationUsers_NonAdmin" />
+
+        <!-- Add job user as admin -->
+        <AddApplicationUser ConnectString="$(Platform_SQLServerConnect)"
+                        UserName="$(Platform_SQLServerJobUserName)"
+                        IsSysAdmin="true"
+                        Condition="'$(Platform_SQLServerJobUserName)' != ''" />
+    </Target>
+
+
+    <Target Name="AddCustomApplicationUsers_Admin">
+        <AddApplicationUser ConnectString="$(Platform_SQLServerConnect)"
+                    UserName="%(ApplicationUser_Admin.Identity)"
+                    IsSysAdmin="true"
+          Condition="'@(ApplicationUser_Admin)' != ''"
+					/>
+    </Target>
+    <Target Name="AddCustomApplicationUsers_NonAdmin">
+        <AddApplicationUser ConnectString="$(Platform_SQLServerConnect)"
+                    UserName="%(ApplicationUser_NonAdmin.Identity)"
+                    IsSysAdmin="false"
+          Condition="'@(ApplicationUser_NonAdmin)' != ''"
+					/>
+    </Target>
+
+
+    <Target Name="CustomConfigureReportServer">
+        <ConfigureReportServer
+                    ReportServiceURL="$(Platform_ReportServiceBaseURL)"
+                    ReportFolder="$(Platform_ReportServiceRootFolder)"
+                    DatabaseServer="$(Platform_ReportServiceSQLServer)"
+                    Database="$(Platform_ReportServiceDatabaseName)"
+                    CreateInternalUser="false"
+                    ReportServiceHost="$(Platform_ReportServiceHost)"
+                    ReportServerUser="$(Platform_ReportServerUser)"
+                    ReportUserPassword="$(Platform_ReportServerPassword)"
+            ReportRootFolders="@(ReportRootFolderItem)"
+            DeleteRootFolderList="true"
+            Timeout="300000"
+		/>
+
+        <Message Text="Resetting web app to clear cached settings" />
+        <ResetWebApp MachineName="$(Platform_WebServer)"
+          VirtualDirName="$(Platform_VirtualDirName)"
+          RootSubPath="$(Platform_WebServerRootSubpath)"
+		/>
+    </Target>
+
+
+    <Target Name="LoadCustomizations">
+        <RunServiceRevisions SqlConnectString="$(Platform_SQLServerConnect)"
+                             RevisionsAssemblies="@(PreRevisionAssembly)"
+                             Condition="'@(PreRevisionAssembly)' != ''" />
+
+
+        <CustomLoadCatalogItems Condition="'@(CatalogItem)' != ''"
+                          ItemsToLoad="@(CatalogItem)"
+                          WebServiceDbName="$(Platform_SelectedDatabase)"
+                          WebServiceUrl="$(Platform_WebServerURL)/appfxwebservice.asmx"
+                          TimeOutSeconds="600"
+                      />
+
+        <RunServiceRevisions SqlConnectString="$(Platform_SQLServerConnect)"
+                             RevisionsAssemblies="@(PostRevisionAssembly)"
+                             Condition="'@(PostRevisionAssembly)' != ''" />
+    </Target>
+
+
+    <Target Name="LoadSystemRoles">
+        <ImportRoleTask Condition="'@(SystemRole)' != ''"
+                    WebServiceUrl="$(Platform_WebServerURL)/AppFxWebService.asmx"
+                    WebServiceDatabaseName="$(Platform_SelectedDatabase)"
+                    RoleDefinitionFiles="@(SystemRole)"/>
+
+    </Target>
+
+
+    <Target Name="ExecuteSQL">
+        <!-- Execute some sql files -->
+        <MSBuild.ExtensionPack.SqlServer.SqlExecute
+          Condition="'@(SqlFile)' != ''"
+          TaskAction="Execute"
+          IgnoreScriptErrors="false"
+          UseTransaction="true"
+          Files="@(SqlFile)"
+          ConnectionString="$(Platform_SQLServerConnect)"
+          Parameters="@(SqlParameter)"
+          CommandTimeout="180" />
+
+    </Target>
+
+    <Target Name="DeployBBDW">
+        <!-- Copy extension files to correct BBDW deploy locations -->
+        <PropertyGroup>
+            <BbdwSsisExtendFolder>$(MSBuildProjectDirectory)\..\Datamarts\BBDW\Extend\SSIS</BbdwSsisExtendFolder>
+            <BbdwRevisionsExtendFolder>$(MSBuildProjectDirectory)\..\Datamarts\BBDW\Extend\Revisions</BbdwRevisionsExtendFolder>
+            <BbRepDepExe>$(MSBuildProjectDirectory)\..\Datamarts\bin\BBRepDep.exe</BbRepDepExe>
+            <BbdwSettingsFile>$(MSBuildProjectDirectory)\..\Datamarts\BBDW\BBDW.settings.xml</BbdwSettingsFile>
+        </PropertyGroup>
+
+        <ItemGroup>
+            <BbdwSsisDeployFilesDelete Include="$(BbdwSsisExtendFolder)\*" />
+            <BbdwRevisionFilesDelete Include="$(BbdwRevisionsExtendFolder)\*" />
+            <BbdwSsisDeployFile Include="BBDWExtension\SSIS\*" />
+            <BbdwRevisionDeployFile Include="BBDWExtension\Revisions\*" />
+        </ItemGroup>
+
+        <!-- Clean out existing files -->
+        <Delete Files="@(BbdwSsisDeployFilesDelete)" Condition="'@(BbdwSsisDeployFilesDelete)' != ''" />
+        <Delete Files="@(BbdwRevisionFilesDelete)" Condition="'@(BbdwRevisionFilesDelete)' != ''" />
+
+        <!-- Copy extension files -->
+        <Copy
+            SourceFiles="@(BbdwSsisDeployFile)"
+            DestinationFolder="$(BbdwSsisExtendFolder)"
+            Condition="'@(BbdwSsisDeployFile)' != ''"
+            />
+        <Copy
+            SourceFiles="@(BbdwRevisionDeployFile)"
+            DestinationFolder="$(BbdwRevisionsExtendFolder)"
+            Condition="'@(BbdwRevisionDeployFile)' != ''"
+            />
+
+        <!-- Run BBRepDep.exe -->
+        <Warning
+            Condition="('@(BbdwSsisDeployFile)' != '' Or '@(BbdwRevisionDeployFile)' != '') And $(BbdwEtlUserPassword) == ''"
+            Text="BBDW extension files detected, but no BBDW ETL user password is configured.  Skipping deployment."
+            />
+
+        <Exec
+            Command="&quot;$(BbRepDepExe)&quot; &quot;$(BbdwSettingsFile)&quot; /PWD:&quot;$(BbdwEtlUserPassword)&quot; /DEPLOYALL"
+            LogStandardErrorAsError="true"
+            Condition="('@(BbdwSsisDeployFile)' != '' Or '@(BbdwRevisionDeployFile)' != '') And $(BbdwEtlUserPassword) != ''"
+            EchoOff="true"
+            />
+
+    </Target>
+
+
+    <Target Name="DefaultTarget">
+        <Message Text="SQL SERVER SETTINGS" />
+        <Message Text="Platform_TemplateDBPath: $(Platform_TemplateDBPath)" />
+        <Message Text="Platform_SQLServerConnectNoDB: $(Platform_SQLServerConnectNoDB)" />
+        <Message Text="Platform_SQLServerConnect: $(Platform_SQLServerConnect)" />
+        <Message Text="Platform_SQLServerDatabaseName: $(Platform_SQLServerDatabaseName)" />
+        <Message Text="Platform_SQLServerDataPath: $(Platform_SQLServerDataPath)" />
+        <Message Text="Platform_SQLServerLogPath: $(Platform_SQLServerLogPath)" />
+        <Message Text="UseFullRecoveryModel: $(UseFullRecoveryModel)" />
+
+        <Message Text=" " />
+        <Message Text="APPLICATION SERVER SETTINGS" />
+        <Message Text="Platform_WebServerURL: $(Platform_WebServerURL)" />
+        <Message Text="Platform_SelectedDatabase: $(Platform_SelectedDatabase)" />
+
+        <Message Text=" " />
+        <Message Text="REPORT SERVER SETTINGS" />
+        <Message Text="Platform_ReportServiceBaseURL: $(Platform_ReportServiceBaseURL)" />
+        <Message Text="Platform_ReportServiceRootFolder: $(Platform_ReportServiceRootFolder)" />
+        <Message Text="Platform_ReportServiceSQLServer: $(Platform_ReportServiceSQLServer)" />
+        <Message Text="Platform_ReportServiceDatabaseName: $(Platform_ReportServiceDatabaseName)" />
+        <Message Text="Platform_ReportServiceHost: $(Platform_ReportServiceHost)" />
+        <Message Text="Platform_ReportServerUser: $(Platform_ReportServerUser)" />
+
+        <Message Text=" " />
+        <Message Text=" " />
+    </Target>
+
+
+</Project>

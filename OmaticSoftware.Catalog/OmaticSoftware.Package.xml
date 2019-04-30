@@ -1,0 +1,15 @@
+<PackageSpec
+    xmlns="bb_appfx_package"
+    xmlns:c="bb_appfx_commontypes"
+    ID="52cc1984-8ed0-48c6-b23a-2539240c4026"
+    Name="Omatic Software Package"
+    Description="A package defining specs authored by Omatic Software."
+    Author="Omatic Software"
+    >
+
+  <c:DependencyList>
+    <!-- Adminstration -->
+    <c:Dependency CatalogAssembly="OmaticSoftware.Catalog.dll" CatalogItem="OmaticSoftware.Catalog.Administration.Specs.DeployedVersion.View.xml" />
+  </c:DependencyList>
+
+</PackageSpec>

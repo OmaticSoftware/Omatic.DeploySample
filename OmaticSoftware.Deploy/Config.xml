@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="ListFiles">
+
+    <!-- PACKAGING SECTION - The following items are related to what goes into the customization package -->
+
+    <!-- DLLs for vroot\bin\custom folder -->
+    <ItemGroup>
+        <PkgBinDll Include="$(OutDir)\OmaticSoftware.Catalog.dll" />
+        <PkgBinDll Include="$(OutDir)\OmaticSoftware.UiModel.dll" />
+    </ItemGroup>
+
+    <!-- HTML files for vroot\browser\htmlforms\custom folder -->
+    <ItemGroup>
+        <PkgHtmlForms Include="$(MSBuildProjectDirectory)\..\OmaticSoftware.UiModel\htmlforms\**" />
+    </ItemGroup>
+
+    <!-- DLLs for MSBuild\Custom\Revisions -->
+    <ItemGroup>
+        <PkgRevisionDll Include="$(OutDir)\OmaticSoftware.Revisions.Before.dll" />
+
+        <PkgRevisionDll Include="$(OutDir)\OmaticSoftware.Revisions.After.dll" />
+    </ItemGroup>
+
+    <!-- BBDW extension files -->
+    <ItemGroup>
+        <!--<PkgBbdwSsisPackage Include="..\OmaticSoftware.ETL\*.dtsx" />
+        <PkgBbdwPackageList Include="..\OmaticSoftware.ETL\BBDW_PackageList_EXT.txt" />
+        <PkgBbdwDeleteList Include="..\OmaticSoftware.ETL\BBDW_DeletedIDTables_EXT.txt" />
+        <PkgBbdwRevisionDll Include="$(OutDir)\OmaticSoftware.Revisions.BBDW.dll" />-->
+    </ItemGroup>
+
+    <!-- END PACKAGING SECTION -->
+
+
+
+    <!-- INSTALLATION SECTION - The following items are related to what gets loaded to CRM -->
+    <PropertyGroup>
+        <DBMasterKeyPassword>REPLACE ME!!!!</DBMasterKeyPassword>
+    </PropertyGroup>
+
+    <!-- Package files to load -->
+    <ItemGroup>
+        <CatalogItem Include="OmaticSoftware.Catalog.OmaticSoftware.Package.xml">
+            <SourceInfo>OmaticSoftware.Catalog.DLL</SourceInfo>
+        </CatalogItem>
+
+        <!-- other package references here -->
+    </ItemGroup>
+
+    <!-- Revision DLLS to load -->
+    <ItemGroup>
+        <!--Revisions to run before customization loading-->
+        <PreRevisionAssembly Include="$(MSBuildProjectDirectory)\RevisionDlls\OmaticSoftware.Revisions.Before.dll" />
+
+        <!--Revisions to run after customization loading-->
+        <PostRevisionAssembly Include="$(MSBuildProjectDirectory)\RevisionDlls\OmaticSoftware.Revisions.After.dll" />
+    </ItemGroup>
+
+    <!-- END INSTALLATION SECTION -->
+
+
+
+    <Target Name="ListFiles">
+        <Message Text="BinDll: @(BinDll)" />
+        <Message Text="RevisionDll: @(RevisionDll)" />
+        <Message Text="HtmlForms: @(HtmlForms)" />
+    </Target>
+</Project>

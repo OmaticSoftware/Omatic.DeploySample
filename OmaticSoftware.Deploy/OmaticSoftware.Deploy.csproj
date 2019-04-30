@@ -1,0 +1,800 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6CE6E672-B4B3-4BB4-A2A1-443F5B44294C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OmaticSoftware.Deploy</RootNamespace>
+    <AssemblyName>OmaticSoftware.Deploy</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Blackbaud.AppFx.XmlTypes, Version=4.0.177.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Blackbaud\SDK40SP12\SDK\DLLReferences\Blackbaud.AppFx.XmlTypes.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>VersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="CheckDbRevKey.cs" />
+    <Compile Include="CreateSqlFromRevisions.cs" />
+    <Compile Include="CustomLoadCatalogItems.cs" />
+    <Compile Include="FixHtmlFormsPaths.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\AppFxWebSvc\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OmaticSoftware.Catalog\OmaticSoftware.Catalog.csproj">
+      <Project>{bb06b2d7-3828-4d9d-92ff-9521f8c956ef}</Project>
+      <Name>OmaticSoftware.Catalog</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OmaticSoftware.Revisions.After\OmaticSoftware.Revisions.After.csproj">
+      <Project>{4b42709d-a8fc-43b6-a5df-a2d2cdfa33b7}</Project>
+      <Name>OmaticSoftware.Revisions.After</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OmaticSoftware.Revisions.Before\OmaticSoftware.Revisions.Before.csproj">
+      <Project>{6e673c4d-cd6f-4d25-8a3f-b11678f2eacf}</Project>
+      <Name>OmaticSoftware.Revisions.Before</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OmaticSoftware.UiModel\OmaticSoftware.UiModel.csproj">
+      <Project>{2820b209-12af-4993-8255-ea995f4c851f}</Project>
+      <Name>OmaticSoftware.UiModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="ApplyVersionToAssemblies.ps1" />
+    <None Include="CustomInstall.proj" />
+    <None Include="CustomizationInstall.ps1" />
+    <None Include="CustomizationUninstall.ps1" />
+    <None Include="CustomPackage.proj" />
+    <None Include="Invoke-MsBuild.psm1" />
+    <None Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild Extension Pack 4 %28x64%29.wixpdb" />
+    <None Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild Extension Pack 4 %28x86%29.wixpdb" />
+    <None Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.dll.config" />
+    <None Include="MSBuildExtensionPack\4.0.12.0\MSBuild Extension Pack Help.chm" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="UnzipFile.ps1" />
+    <None Include="Web References\AppFxWebSvc\AdHocQueryBuildReportDefinitionReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\AdHocQueryDeleteReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\AdHocQueryGetDefinitionForDataListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\AdHocQueryGetDefinitionForReportReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\AdHocQueryGetDefinitionForSmartQueryReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\AdHocQueryGetDefinitionReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\AdHocQueryGetIDByNameReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\AdHocQueryGetSettingsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\AdHocQueryProcessGetDeferredResultReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\AdHocQueryProcessReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\AdHocQueryRefreshStaticIDSetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\AdHocQuerySaveDataListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\AdHocQuerySaveReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\AdHocQuerySaveReportReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\AdHocQuerySaveReportToCatalogAndReportServerReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\AdHocQuerySaveSearchListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\AdHocQuerySaveSmartQueryReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\AdHocQueryUserGrantedReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\AllProductsExpiredReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\appfxwebservice.wsdl" />
+    <None Include="Web References\AppFxWebSvc\BatchDefaultsLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\BatchDismissExceptionsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\BatchInsertErrorReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\BatchLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\BatchSaveReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\BatchSettingsGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\BatchSettingsSaveReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\BatchTemplateGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\BatchTypeGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\BatchValidateReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\BusinessProcessGenerateActiveXScriptReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\BusinessProcessInformationReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\BusinessProcessLaunchGetDeferredResultReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\BusinessProcessLaunchReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\BusinessProcessOutputLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CancelAsyncOperationReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CatalogBrowserGetCatalogItemReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CatalogBrowserGetCatalogResourceReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CatalogBrowserGetDependencyTreeReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CatalogBrowserGetItemByIDReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CatalogBrowserGetItemsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CatalogBrowserLoadCatalogItemReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CodeTableEntryAddReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CodeTableEntryDeleteReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CodeTableEntryGetDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CodeTableEntryGetDescriptionReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CodeTableEntryGetIDReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CodeTableEntryGetListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CodeTableEntryUpdateReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CodeTableGetDescriptionReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CodeTableGetLookupInfoReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ConditionSettingExistsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ConfigurationDataInformationReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ConfigurationDataListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CountryGetFormatsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CountryStateGetIDReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CreditCardVaultReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CurrencyExchangeRateGetLatestReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CurrencyExchangeRateGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CurrencyGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\CurrentUserInfoGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\DashboardGetDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\DashboardGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\DataFormGetDropDownValueListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\DataFormInstanceGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\DataFormLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\DataFormSaveReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\DataFormSupportsWebUIReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\DataListGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\DataListLoadMoreReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\DataListLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\DataSourceGetLastUpdatedReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\EmailGetDbMailConfigInfoReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\EmailSendToAppUserReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ExportDefinitionGetIDByNameReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ExportDefinitionLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ExportDefinitionSaveReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\FeatureTipsGetTipSeenReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\FeatureTipsSetTipSeenReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\GetADGroupSidReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\GetAvailableREDatabasesReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\GetFiscalYearLastMonthReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\GetFormatPhonesSettingReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\GetGeneralPurposeEmailStatusReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\GetInstalledProductListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\GetSiteHierarchyReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\GlobalChangeInformationReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\GlobalChangeListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\GlobalChangeParametersLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\GlobalChangeSupportsWebUIReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\IDMapReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\InstalledProductCountReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\InvokeServiceReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\KpiDashboardGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\KpiDashboardSaveReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\KpiGetDynamicGoalValueReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\KpiGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\KpiGetTreeReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\KpiGetValueReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\KpiInstanceDeleteReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\KpiInstanceGetDynamicGoalValueReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\KpiInstanceGetIDByNameReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\KpiInstanceGetListByKpiCatalogIDReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\KpiInstanceGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\KpiInstanceGetStatusReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\KpiInstanceGetTreeReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\KpiInstanceSaveReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\KpiSupportsWebUIReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\MapEntityLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\MergeTaskGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\NotificationGetByRecordTypeReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\NotificationListForRecordReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\PageDefinitionGetListByRecordTypeReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\PageDefinitionGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\PingReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ProcessStatsGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ProductIsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\QueryViewGetLookUpValuesReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\QueryViewGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\QueryViewGetRootListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\QueryViewGetTreeNodeReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\QueryViewGetTreeReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\RecordOperationGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\RecordOperationGetPromptReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\RecordOperationPerformGetDeferredResultReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\RecordOperationPerformReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ReportRootFoldersGetListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ReportsExportReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ReportsGenerateReportModelReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ReportsGetDataSourceReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ReportsGetReportParametersReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ReportsGetReportSpecByNameReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ReportsGetReportSpecReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ReportsGetURLsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ReportsPublishServerReportToCatalogReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ReportsSaveLinkedReportReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\RSSGetFeedReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SearchListFormSupportsWebUIReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SearchListGetListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SearchListGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SearchListGetTranslationReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SearchListLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SearchListReplacementGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SecurityGetRoleFeaturePermTreeReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SecurityUserGrantedFeatureReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SelectionGetQueryInfoReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SelfServicePasswordResetInfoGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SendGeneralPurposeEmailReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ServiceInfoGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ServiceVersionInfo.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SessionEndReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SessionStartReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ShellFeatureSearchReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ShellGetAllTasksReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ShellGetBrandOptionsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ShellGetNavigationReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ShellGetQuickFindTasksReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ShellGetTaskReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ShellGetTaskStatusReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ShellGetTaskWizardReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ShellGetUIWidgetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ShellGetUserAvailableUIWidgetsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ShellSettingsGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\ShellSettingsSaveReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SimpleDataListGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SimpleDataListGetTranslationReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SimpleDataListLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SiteFilterGetRowsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SmartFieldInformationReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SmartFieldListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SmartFieldParametersLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SmartFieldSupportsWebUIReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SmartQueryGetListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SmartQueryGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SmartQueryInstanceDeleteReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SmartQueryInstanceGetIDByNameReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SmartQueryInstanceGetMetaDataReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SmartQueryInstanceSaveReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SmartQueryInstanceUserGrantedReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SmartQueryLoadGetDeferredResultReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SmartQueryLoadReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SmartQueryRefreshStaticIDSetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SmartQuerySupportsWebUIReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SyncRoleUsersReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\SystemRoleAddWebLocalUserReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UnlockModuleReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UpdateProductsListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserBatchTemplateSettingsGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserBatchTemplateSettingsUpdateReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserDataFormSettingsGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserDataFormSettingsUpdateReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserDataListSettingsGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserFavoritesGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserFavoritesSaveReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserHomePageGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserHomePageSaveReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserListBuilderSettingsGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserListBuilderSettingsUpdateReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserMultiPageHistoryGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserPageHistoryGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserPageHistoryUpdateReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserPageSettingsGetTabSettingsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserPageSettingsUpdateTabSettingsReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserPasswordResetLinkSendReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserPasswordResetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserPasswordResetTokenValidateReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserPrimarySiteGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserSearchListPersistentFieldsGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserSearchListSettingsGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserSearchListSettingsUpdateReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserSearchListTaskHistoryGetListReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AppFxWebSvc\UserSearchListTaskHistoryGetReply.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\Interop.COMAdmin.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\Interop.IWshRuntimeLibrary.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\Ionic.Zip.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.BizTalk.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Crm.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Git.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Iis7.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Loggers.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Sql2008.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Sql2012.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Sql2014.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.StyleCop.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.TaskFactory.Dlr.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.TaskFactory.PowerShell.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Tfs2012.dll" />
+    <Content Include="MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.Tfs2013.dll" />
+    <Content Include="Readme.txt" />
+    <None Include="Web References\AppFxWebSvc\appfxwebservice.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="https://omaticmatthdevenv.eastus.cloudapp.azure.com/bbAppFx_COH/appfxwebservice.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\AppFxWebSvc\</RelPath>
+      <UpdateFromURL>https://omaticmatthdevenv.eastus.cloudapp.azure.com/bbAppFx_COH/appfxwebservice.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>OmaticSoftware_Deploy_AppFxWebSvc_AppFxWebService</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>"$(MSBuildBinPath)\msbuild.exe" "$(ProjectDir)CustomPackage.proj" /p:OutDir=$(OutDir) /t:CustomPackageFiles</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

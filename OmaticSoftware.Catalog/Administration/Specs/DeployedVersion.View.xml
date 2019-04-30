@@ -1,0 +1,44 @@
+﻿<ViewDataFormTemplateSpec
+    xmlns="bb_appfx_viewdataformtemplate"
+    xmlns:c="bb_appfx_commontypes"
+    ID="E7B0F7B9-CB35-4AF6-B948-566A78D8892E"
+    Name="Omatic Deployed Version View Data Form"
+    Description="A data form for viewing deployed DLL versions."
+    Author="Omatic Software"
+    DataFormInstanceID="C949A245-4F01-4FA8-8368-3E7C0B440347"
+    c:SecurityUIFolder="Omatic"
+    HasID="false"
+    >
+
+  <CLRDataForm AssemblyName="OmaticSoftware.Catalog" ClassName="OmaticSoftware.Catalog.Administration.DeployedVersionViewDataForm" />
+
+  <FormMetaData xmlns="bb_appfx_commontypes">
+    <FormFields>
+
+      <FormField FieldID="VERSIONS" Caption="Versions" DataType="XML">
+        <Collection>
+          <Fields>
+            <FormField FieldID="NAME" Caption="Filename" DataType="String" />
+            <FormField FieldID="VERSION" Caption="Version" DataType="String" />
+            <FormField FieldID="DATEMODIFIED" Caption="Date modified" DataType="Date" IncludeTimeOnDate="true" />
+          </Fields>
+        </Collection>
+      </FormField>
+    </FormFields>
+
+
+    <WebUIComponent>
+      <UIModel AssemblyName="OmaticSoftware.UiModel.dll" ClassName="OmaticSoftware.UiModel.OmaticDeployedVersionViewDataFormUIModel" />
+      <WebUI>
+        <ExternalResource Url="browser/htmlforms/custom/omaticsoftware.uimodel/OmaticDeployedVersionViewDataForm.html" />
+      </WebUI>
+    </WebUIComponent>
+
+    <UIFields>
+      <FormField FieldID="SERVERNAME" Caption="Server name" DataType="String" />
+    </UIFields>
+
+
+  </FormMetaData>
+
+</ViewDataFormTemplateSpec>

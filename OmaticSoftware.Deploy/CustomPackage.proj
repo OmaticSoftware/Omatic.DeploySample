@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" >
+
+    <Import Project="$(MSBuildProjectDirectory)\Config.xml"/>
+
+    <!-- Packaging folders -->
+    <PropertyGroup>
+        <PkgFolder Condition="'$(PkgFolder)' == ''">$([System.IO.Path]::Combine($(OutDir), "Package"))</PkgFolder>
+        <PkgInstallSupportFilesFolder>$(PkgFolder)\InstallSupportFiles</PkgInstallSupportFilesFolder>
+        <PkgDocsFilesFolder>$(PkgFolder)\Docs</PkgDocsFilesFolder>
+        <PkgBinDllsFolder>$(PkgFolder)\BinDlls</PkgBinDllsFolder>
+        <PkgRevisionDllsFolder>$(PkgFolder)\RevisionDlls</PkgRevisionDllsFolder>
+        <PkgHtmlFormsFolder>$(PkgFolder)\HtmlForms</PkgHtmlFormsFolder>
+        <PkgSqlFilesFolder>$(PkgFolder)\Sql</PkgSqlFilesFolder>
+        <PkgSystemRolesFolder>$(PkgFolder)\SystemRoles</PkgSystemRolesFolder>
+        <PkgBbdwExtensionsFolder>$(PkgFolder)\BBDWExtension</PkgBbdwExtensionsFolder>
+        <PkgBbdwRevisionsFolder>$(PkgBbdwExtensionsFolder)\Revisions</PkgBbdwRevisionsFolder>
+        <PkgBbdwSsisFolder>$(PkgBbdwExtensionsFolder)\SSIS</PkgBbdwSsisFolder>
+
+        <PkgTasksFolder>$(PkgFolder)\Tasks</PkgTasksFolder>
+        <PkgCustomTasksFolder>$(PkgTasksFolder)\Custom</PkgCustomTasksFolder>
+        <PkgMsBuildEpTasksFolder>$(PkgTasksFolder)\MSBuildExtensionPack</PkgMsBuildEpTasksFolder>
+
+        <!--<PkgSqlDeployFile>$(PkgSqlFilesFolder)\Deploy.sql</PkgSqlDeployFile>-->
+        <PkgArchive>$(OutDir)\OmaticCustomizationPackage.zip</PkgArchive>
+
+        <PkgBinDllsArchive>$(OutDir)\OmaticCustomization_BinDlls.zip</PkgBinDllsArchive>
+        <PkgHtmlFormsArchive>$(OutDir)\OmaticCustomization_HtmlForms.zip</PkgHtmlFormsArchive>
+        <PkgSqlRevisionsArchive>$(OutDir)\OmaticCustomization_Sql.zip</PkgSqlRevisionsArchive>
+
+    </PropertyGroup>
+
+
+    <!-- MSBuild task files, other supporting files -->
+    <ItemGroup>
+        <MsBuildEpTaskFiles Include="$(MSBuildProjectDirectory)\MSBuildExtensionPack\4.0.12.0\Binaries\**" Exclude="$(MSBuildProjectDirectory)\MSBuildExtensionPack\4.0.12.0\Binaries\*pdb" />
+        <CustomTaskFiles Include="$(OutDir)\OmaticSoftware.Deploy.dll" />
+        <DeploySupportFiles Include="$(MSBuildProjectDirectory)\CustomizationInstall.ps1" />
+        <DeploySupportFiles Include="$(MSBuildProjectDirectory)\Invoke-MsBuild.psm1" />
+        <InstallSupportFiles Include="$(MSBuildProjectDirectory)\Config.xml" />
+        <InstallSupportFiles Include="$(MSBuildProjectDirectory)\CustomInstall.proj" />
+        <InstallSupportFiles Include="$(MSBuildProjectDirectory)\CustomizationUninstall.ps1" />
+    </ItemGroup>
+
+    <!-- Custom build tasks to support packaging -->
+    <UsingTask AssemblyFile="$(OutDir)\OmaticSoftware.Deploy.dll" TaskName="FixHtmlFormsPaths" />
+    <UsingTask AssemblyFile="$(OutDir)\OmaticSoftware.Deploy.dll" TaskName="CreateSqlFromRevisions" />
+    <UsingTask AssemblyFile="$(MSBuildProjectDirectory)\MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.dll" TaskName="MSBuild.ExtensionPack.Compression.Zip" />
+    <UsingTask AssemblyFile="$(MSBuildProjectDirectory)\MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.dll" TaskName="MSBuild.ExtensionPack.FileSystem.File" />
+    <UsingTask AssemblyFile="$(MSBuildProjectDirectory)\MSBuildExtensionPack\4.0.12.0\Binaries\MSBuild.ExtensionPack.dll" TaskName="MSBuild.ExtensionPack.Framework.Assembly" />
+
+
+    <Target Name="CreateSqlFromRevisions" Outputs="%(PkgRevisionDll.Identity)">
+        <Message Text="Creating SQL file for @(PkgRevisionDll)" />
+
+        <CreateSqlFromRevisions
+            RevisionsDll="@(PkgRevisionDll)"
+            OutputFolder="$(PkgSqlFilesFolder)" />
+        
+    </Target>
+    
+    <Target Name="CustomPackageFiles">
+        <!-- Remove old package folders (if applicable) and create new ones -->
+        <Message Text="Using PkgFolder: $(PkgFolder)" />
+        <RemoveDir Directories="$(PkgFolder)" Condition="Exists($(PkgFolder))" ContinueOnError="true" />
+        <Warning Condition="Exists($(PkgFolder))" Text="Unable to delete '$(PkgFolder)', ensure there aren't any open files or folders.  Package copy is proceeding." />
+
+        <Delete Files="$(OutDir)\*.zip" />
+
+        <!-- Create package directory and subfolders -->
+        <MakeDir Directories="$(PkgFolder);$(PkgBinDllsFolder);$(PkgRevisionDllsFolder);$(PkgHtmlFormsFolder);$(PkgSqlFilesFolder);$(PkgSystemRolesFolder);$(PkgTasksFolder);$(PkgCustomTasksFolder);$(PkgMsBuildEpTasksFolder);$(PkgBbdwExtensionsFolder);$(PkgBbdwRevisionsFolder);$(PkgBbdwSsisFolder);$(PkgDocsFilesFolder)" />
+
+        <Copy SourceFiles="$(MSBuildProjectDirectory)\Readme.txt" DestinationFolder="$(PkgFolder)" />
+
+        <!-- Copy bin DLLs, revision DLLs -->
+        <Copy SourceFiles="@(PkgBinDll)" DestinationFolder="$(PkgBinDllsFolder)" />
+        <Copy SourceFiles="@(PkgRevisionDll)" DestinationFolder="$(PkgRevisionDllsFolder)" />
+
+        <!-- Remove everything before 'htmlforms' in HtmlForms paths -->
+        <FixHtmlFormsPaths Paths="@(PkgHtmlForms)" DestinationFolder="$(PkgHtmlFormsFolder)">
+            <Output TaskParameter="FixedPaths" ItemName="FixedHtmlForms" />
+        </FixHtmlFormsPaths>
+        <Copy SourceFiles="@(PkgHtmlForms)" DestinationFiles="@(FixedHtmlForms)"/>
+
+        <!-- Create SQL revision files -->
+        <CallTarget Targets="CreateSqlFromRevisions" Condition="'@(PkgRevisionDll)' != ''" />
+
+        <!-- Copy SQL files, system roles, docs -->
+        <!--<Copy SourceFiles="@(PkgSqlFile)" DestinationFolder="$(PkgSqlFilesFolder)" />-->
+        <Copy SourceFiles="@(PkgSystemRole)" DestinationFolder="$(PkgSystemRolesFolder)" />
+        <Copy SourceFiles="@(MsBuildEpTaskFiles)" DestinationFolder="$(PkgMsBuildEpTasksFolder)" />
+        <Copy SourceFiles="@(CustomTaskFiles)" DestinationFolder="$(PkgCustomTasksFolder)" />
+        <Copy SourceFiles="@(PkgDocFile)" DestinationFolder="$(PkgDocsFilesFolder)" Condition="'@(PkgDocFile)' != ''" />
+
+        <!-- Copy files to support deploy/installation -->
+        <Copy SourceFiles="@(DeploySupportFiles)" DestinationFolder="$(PkgFolder)" />
+        <Copy SourceFiles="@(InstallSupportFiles)" DestinationFolder="$(PkgInstallSupportFilesFolder)" />
+        
+        <!-- Copy BBDW extension files -->
+        <Copy SourceFiles="@(PkgBbdwSsisPackage);@(PkgBbdwPackageList);@(PkgBbdwDeleteList)" DestinationFolder="$(PkgBbdwSsisFolder)" />
+        <Copy SourceFiles="@(PkgBbdwRevisionDll)" DestinationFolder="$(PkgBbdwRevisionsFolder)" />
+
+        <!-- Create archive with deploy files -->
+        <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressPath="$(PkgFolder)" ZipFileName="$(PkgArchive)" RemoveRoot="$(PkgFolder)" />
+
+        <!-- Create separate archives for BinDlls, HtmlForms, SQL to support one-off, manual deploys -->
+        <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressPath="$(PkgBinDllsFolder)" ZipFileName="$(PkgBinDllsArchive)" RemoveRoot="$(PkgBinDllsFolder)" />
+        <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressPath="$(PkgHtmlFormsFolder)" ZipFileName="$(PkgHtmlFormsArchive)" RemoveRoot="$(PkgHtmlFormsFolder)" />
+        <MSBuild.ExtensionPack.Compression.Zip TaskAction="Create" CompressPath="$(PkgSqlFilesFolder)" ZipFileName="$(PkgSqlRevisionsArchive)" RemoveRoot="$(PkgSqlFilesFolder)" />
+
+        <!-- Rename according to version -->
+        <MSBuild.ExtensionPack.Framework.Assembly TaskAction="GetInfo" NetAssembly="$(OutDir)\OmaticSoftware.Deploy.dll">
+            <Output TaskParameter="OutputItems" ItemName="Info"/>
+        </MSBuild.ExtensionPack.Framework.Assembly>
+        <PropertyGroup>
+            <NewPkgFileName>$([System.IO.Path]::GetDirectoryName($(PkgArchive)))\$([System.IO.Path]::GetFileNameWithoutExtension($(PkgArchive)))_%(Info.FileVersion)$([System.IO.Path]::GetExtension($(PkgArchive)))</NewPkgFileName>
+            <NewBinDllsFileName>$([System.IO.Path]::GetDirectoryName($(PkgBinDllsArchive)))\$([System.IO.Path]::GetFileNameWithoutExtension($(PkgBinDllsArchive)))_%(Info.FileVersion)$([System.IO.Path]::GetExtension($(PkgBinDllsArchive)))</NewBinDllsFileName>
+            <NewHtmlFormsFileName>$([System.IO.Path]::GetDirectoryName($(PkgHtmlFormsArchive)))\$([System.IO.Path]::GetFileNameWithoutExtension($(PkgHtmlFormsArchive)))_%(Info.FileVersion)$([System.IO.Path]::GetExtension($(PkgHtmlFormsArchive)))</NewHtmlFormsFileName>
+            <NewSqlFileName>$([System.IO.Path]::GetDirectoryName($(PkgSqlRevisionsArchive)))\$([System.IO.Path]::GetFileNameWithoutExtension($(PkgSqlRevisionsArchive)))_%(Info.FileVersion)$([System.IO.Path]::GetExtension($(PkgSqlRevisionsArchive)))</NewSqlFileName>
+        </PropertyGroup>
+        <Message Text="NewPkgFileName: $(NewPkgFileName)" />
+        <Message Text="NewBinDllsFileName: $(NewBinDllsFileName)" />
+        <Message Text="NewHtmlFormsFileName: $(NewHtmlFormsFileName)" />
+        <Message Text="NewSqlFileName: $(NewSqlFileName)" />
+        <Move SourceFiles="$(PkgArchive)" DestinationFiles="$(NewPkgFileName)" />
+        <Move SourceFiles="$(PkgBinDllsArchive)" DestinationFiles="$(NewBinDllsFileName)" />
+        <Move SourceFiles="$(PkgHtmlFormsArchive)" DestinationFiles="$(NewHtmlFormsFileName)" />
+        <Move SourceFiles="$(PkgSqlRevisionsArchive)" DestinationFiles="$(NewSqlFileName)" />
+
+    </Target>
+
+</Project>

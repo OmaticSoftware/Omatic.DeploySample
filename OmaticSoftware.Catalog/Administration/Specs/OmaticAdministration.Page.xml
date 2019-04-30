@@ -1,0 +1,109 @@
+﻿<PageDefinitionSpec
+    xmlns="bb_appfx_pagedefinition"
+    xmlns:c="bb_appfx_commontypes"
+    ID="8a112ec1-38f1-4e62-9d75-8c317f1d77d4"
+    Name="Omatic Administration Page"
+    Description="A page for configuration/administrating Omatic Software customizations."
+    Author="Omatic Software"
+    >
+
+  <PageHeader Caption="Omatic Administration" ImageKey="CATALOG:OmaticSoftware.Catalog,OmaticSoftware.Catalog.Images.OmaticLogo_32.png">
+    <ContextLinks>
+      <ContextLink PageID="adcb9c48-0459-466f-b53f-4d4979449ffb">
+        <Caption>Omatic Integrations</Caption>
+      </ContextLink>
+    </ContextLinks>
+  </PageHeader>
+
+  <Tabs>
+    <Tab ID="47EB0F03-18CD-476F-AED0-D9C877589297" Caption="Configurations">
+      <Sections>
+        <Section ID="72F46012-B0C7-4D5C-8EAE-DB53C99C87A0">
+          <DataList ID="fc8525b3-ad86-4aab-8b7f-1f3a59697b62" AutoDisplayFilters="true">
+            <RenderStyle>
+              <GroupedView>
+                <Groups>
+                  <Group ColumnName="CONFIGURATIONSET" Default="true" />
+                </Groups>
+                <DetailViewForm ViewDataFormID="dada7b8c-2a07-4109-8ff5-4c0cf48e9af0" />
+                <Legend>
+                  <LegendExpressionList>
+                    <LegendExpression ID="f756ae50-ecb4-4b1d-8f1b-50d1c59a7ad9" Bold="true" DisplayStyle="Bad">= Fields!CONFIGURATIONSET = "Global" AndAlso Fields!NAME = "LogLevel" AndAlso Fields!VALUE = "DEBUG"</LegendExpression>
+                    <LegendExpression ID="41efc4ea-297c-4f5f-b220-55b37a2fd4ce" DisplayStyle="Warning">= Fields!CONFIGURATIONSET = "Global" AndAlso Fields!NAME = "LogLevel" AndAlso Fields!VALUE = "INFO"</LegendExpression>
+                  </LegendExpressionList>
+                </Legend>
+              </GroupedView>
+            </RenderStyle>
+          </DataList>
+          <Actions>
+            <Action ID="D3527FDE-50FF-46AC-9FEB-F852C9A1E85C" Caption="Add">
+              <c:ShowAddDataForm DataFormID="a9add661-b71b-4dd6-8cb2-5e79129610a9" />
+            </Action>
+            <Action ID="0F2A93EA-27DB-4809-934B-31C99BB18639" Caption="Edit">
+              <c:ShowDataForm DataFormID="d03c05c5-3ed5-47e8-82ee-e1ce194a75a6">
+                <c:ActionContext>
+                  <c:SectionField>ID</c:SectionField>
+                </c:ActionContext>
+              </c:ShowDataForm>
+            </Action>
+            <Action ID="313480CA-A156-4748-A006-C19F51220EFD" Caption="Delete" ImageKey="res:delete">
+              <c:ExecuteRecordOperation RecordOperationID="6542137c-1c1c-4352-b762-1d2828ba753b" ShowPrompt="true">
+                <c:ActionContext>
+                  <c:SectionField>ID</c:SectionField>
+                </c:ActionContext>
+              </c:ExecuteRecordOperation>
+            </Action>
+          </Actions>
+        </Section>
+      </Sections>
+    </Tab>
+    <Tab ID="4779ed3e-9fdc-4d53-8f94-23735ca99b5a" Caption="Deployed Versions">
+
+      <Sections>
+        <Section ID="e6eb5c77-1e74-48dc-a73a-237a8916bb70" Caption="Deployed versions">
+          <DataForm ID="C949A245-4F01-4FA8-8368-3E7C0B440347"/>
+        </Section>
+      </Sections>
+    </Tab>
+    <Tab ID="4CF0DA10-AEFF-490F-AA31-B9E7B5F6B5AC" Caption="Logs">
+      <Sections>
+        <Section ID="8E048A2D-D7F1-4B4D-A9A6-CDF9972C3F58" Caption="Logs">
+          <ListBuilder QueryViewID="1edcefd2-04fb-493c-8cb8-d04945e2054e">
+            <RequiredColumns>
+              <Column Name="ID" />
+              <Column Name="DATE" />
+            </RequiredColumns>
+            <RenderStyle>
+              <StandardView>
+                <DetailViewForm ViewDataFormID="d9ad3604-9d5c-4820-8ef0-0bf57ae0afad" />
+              </StandardView>
+            </RenderStyle>
+          </ListBuilder>
+          <Actions>
+            <Action ID="0D7B3F83-297C-4712-981B-804A1D1E5E88" Caption="Clear log table">
+              <c:ExecuteRecordOperation RecordOperationID="2e11245b-6c40-433a-99a5-393685b83935" ShowPrompt="true" />
+            </Action>
+          </Actions>
+        </Section>
+      </Sections>
+    </Tab>
+  </Tabs>
+
+
+  <PageActionGroups>
+    <PageActionGroup ID="712253f1-4ef8-415e-907b-ab05274cdb43" Caption="Configuration" ImageKey="RES:Tasks">
+      <Actions>
+        <Action ID="4B117C84-1781-49EE-8A4F-9CC474815003" Caption="Queue assignment" ImageKey="RES:tablespecextension">
+          <c:ShowPage PageID="4061090d-e1a9-4200-8f8f-645adc5ce6fc" TabID="47EB0F03-18CD-476F-AED0-D9C877589297" />
+        </Action>
+        <Action ID="c17dad1c-b553-4705-87a7-720465f46fb1" Caption="Validation and processing" ImageKey="RES:checkmark">
+          <c:ShowPage PageID="a03ccb22-a96f-4d88-a52f-97eeea4a44d0" />
+        </Action>
+        <Action ID="C5A7E17B-C842-41F9-BEEE-C175E4FEF808" Caption="Matching" ImageKey="CATALOG:Blackbaud.AppFx.Constituent.Catalog.dll,Blackbaud.AppFx.Constituent.Catalog.duplicate_constituents_32-b.png">
+          <c:ShowPage PageID="10cac1c2-a279-4787-a36c-d88b566fb325" />
+        </Action>
+      </Actions>
+    </PageActionGroup>
+  </PageActionGroups>
+
+</PageDefinitionSpec>

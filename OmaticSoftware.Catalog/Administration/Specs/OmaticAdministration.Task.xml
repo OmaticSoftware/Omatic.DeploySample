@@ -1,0 +1,16 @@
+﻿<TaskSpec
+    xmlns="bb_appfx_task"
+    xmlns:c="bb_appfx_commontypes"
+    ID="7f948a75-0452-4055-b348-b9df98e63dc2"
+    Name="Omatic Administration"
+    Description="Administer Omatic customizations."
+    Author="Omatic Software"
+    FunctionalAreaID="64bbf407-7062-4f63-bc7c-e947f3eef6aa"
+    TaskGroup="Omatic Software"
+    Sequence="900"
+    ImageKey="RES:toolbox_16"
+	>
+
+    <c:ShowPage PageID="8a112ec1-38f1-4e62-9d75-8c317f1d77d4" />
+
+</TaskSpec>
