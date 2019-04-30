@@ -12,8 +12,6 @@ The sample solution performs the following steps:
   * Run pre-customization revisions
   * Run LoadSpec against "Package Spec" XML files
   * Run post-customization revisions
-  * Load system roles
-  * Run SQL files
 * Optionally, the included script supports the following:
   * Copy-only installs (i.e. don't run revisions, don't load customizations, don't load system roles, and don't run SQL).  This is useful when deploying to load-balanced web servers where customization loading only needs to take place on one server--the rest just need copies of the same files.
   * Database restore.  This is useful for setting up new environments, refreshing the DB in existing environments, and automated scenarios (continuous integration, automated testing) where a DB backup in a known state is used as a starting point.  The database restore performs the following steps:
